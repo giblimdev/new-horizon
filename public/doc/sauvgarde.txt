@@ -1,0 +1,316 @@
+Filtres
+Votre budget (par nuit)
+€10
+€1000+
+
+
+
+
+
+
+
+
+
+Équipements de la chambre
+
+Shared bathroom,
+
+Shared toilet,
+
+Air conditioning,
+
+WiFi included,
+
+Ensuite bathroom,
+
+Jacuzzi,
+
+Bathtub,
+
+Shower,
+
+Toilet,
+
+Balcony,
+
+Minibar,
+
+Refrigerator,
+
+Kettle,
+
+Coffee maker,
+
+Television,
+
+TV with streaming service,
+
+Safe,
+
+Iron and ironing board,
+
+Hair dryer,
+
+Free toiletries,
+
+Robes and slippers,
+
+Desk,
+
+Kitchen,
+
+Laundry facilities,
+
+Washing machine,
+
+Baby cot available,
+
+
+
+
+
+
+
+
+
+
+
+Types de lits
+
+1 king size bed
+
+1 double bed
+
+1 single bed
+
+2 single beds
+
+3 beds and more
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import Image from "next/image";
+
+const listCity = [
+  {
+    title: "1 - Paris, France",
+    img: "/paris.png",
+    description:
+      "Toujours dans le top des classements de Euromonitor International 2024, Paris maintient sa place grâce à ses performances économiques, ses infrastructures touristiques et ses initiatives en matière de durabilité. Ville lumière, elle fascine avec ses monuments emblématiques tels que la Tour Eiffel, le Louvre ou Montmartre. Les touristes adorent flâner sur les quais de Seine, savourer sa gastronomie raffinée et profiter de son ambiance romantique. Paris incarne un mélange unique de culture, d’élégance et d’histoire.",
+  },
+  {
+    title: "2 - Dubaï, Émirats Arabes Unis",
+    img: "/dubai.png",
+    description:
+      "Dubaï impressionne par sa croissance constante grâce à ses infrastructures touristiques modernes, son attractivité économique et sa vision futuriste. Destination emblématique du luxe, elle séduit avec ses gratte-ciels comme le Burj Khalifa, ses complexes de shopping démesurés et ses expériences uniques dans le désert. Les visiteur·se·s apprécient également ses plages paradisiaques, ses hôtels somptueux et sa scène culturelle en pleine émergence. Dubaï incarne l’équilibre entre modernité et hospitalité traditionnelle.",
+  },
+  {
+    title: "3 - Amsterdam, Pays-Bas",
+    img: "/amsterdam.png",
+    description:
+      "En progression dans le classement grâce à ses initiatives en matière de durabilité et à ses politiques touristiques innovantes, Amsterdam s’impose comme une destination exemplaire. Réputée pour ses canaux pittoresques, ses maisons à pignons et son riche patrimoine culturel, elle attire des millions de visiteur·se·s chaque année. Les musées comme le Rijksmuseum et la Maison d’Anne Frank fascinent, tandis que les balades à vélo et l’atmosphère décontractée séduisent. Amsterdam incarne harmonieusement histoire, modernité et respect de l’environnement.",
+  },
+  {
+    title: "4 - Madrid, Espagne",
+    img: "/madrid.png",
+    description:
+      "En progrès dans le classement, Madrid se distingue par ses infrastructures touristiques performantes, son dynamisme culturel et son accueil chaleureux. Capitale vibrante, elle séduit avec des musées prestigieux comme le Prado, des places emblématiques comme la Puerta del Sol, et des quartiers animés tels que Malasaña. Sa gastronomie, de ses tapas aux marchés traditionnels comme San Miguel, et sa vie nocturne légendaire enchantent les visiteur·se·s. Madrid incarne un mélange parfait de tradition, d’histoire, de modernité et de convivialité.",
+  },
+  {
+    title: "5 - Rome, Italie",
+    img: "/rome.png",
+    description:
+      "Malgré une légère stabilité dans le classement, Rome continue d’attirer grâce à ses efforts pour moderniser ses infrastructures touristiques tout en préservant son patrimoine historique. La Ville Éternelle émerveille avec des sites légendaires comme le Colisée, la Fontaine de Trevi et la Cité du Vatican. Les visiteur·se·s adorent flâner dans ses ruelles pittoresques, déguster une cuisine italienne authentique et s’imprégner de son ambiance romantique. Mélange unique d’histoire, de culture et de modernité, Rome séduit inlassablement.",
+  },
+  {
+    title: "6 - Londres, Royaume-Uni",
+    img: "/londre.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "7 - New York, États-Unis",
+    img: "/newyork.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "8 - Barcelone, Espagne",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+
+  {
+    title: "9 - Tokyo, Japon",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "10 - Istanbul, Turquie",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "11 - Bangkok, Thaïlande",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "12 - Singapour, Asie du Sud-Est",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "13 - Las Vegas, États-Unis",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "14 -Milan, Italie",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "15 - Vienne, Autriche",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "16 - Hong Kong, Chine",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "17 - Berlin, Allemagne",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "18 -  Los Angeles, États-Unis",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "19 - Prague, République Tchèque",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "20 -Sydney, Australie",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "21 - Séoul, Corée du Sud",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "22 -Lisbonne, Portugal",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "23 -  Miami, États-Unis",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "24 - Shanghai, Chine",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "25 - Chicago, États-Unis",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "26 - Moscou, Russie",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "27 - Kuala Lumpur, Malaisie",
+    img: "/rome.png",
+    description:
+      "Londres maintient sa position dans le classement grâce à ses infrastructures de classe mondiale, son attractivité touristique et son rayonnement culturel. Métropole emblématique, elle fascine avec ses monuments célèbres tels que Big Ben, la Tour de Londres et Buckingham Palace. Les musées gratuits, les quartiers dynamiques comme Camden et Soho, et une scène culinaire diversifiée et en plein essor séduisent les visiteur·se·s. Londres allie histoire, modernité et diversité, offrant une expérience riche et unique à chaque voyageur·se.",
+  },
+  {
+    title: "28 - San Francisco, États-Unis",
+    img: "/buenos-aires.png",
+    description:
+      "San Francisco reste stable dans le classement grâce à son attrait touristique et son ambiance unique. La ville séduit avec des sites emblématiques comme le Golden Gate Bridge, Alcatraz et ses célèbres rues en pente. Les visiteur·se·s aiment explorer des quartiers variés comme Chinatown et Mission District, ainsi que profiter de sa gastronomie innovante. Mélange d’histoire, de culture et de modernité, San Francisco offre une atmosphère conviviale et un cadre naturel exceptionnel, entouré par l’océan et les collines californiennes.",
+  },
+  {
+    title: "29 - Pékin - Chine",
+    img: "/buenos-aires.png",
+    description:
+      "San Francisco reste stable dans le classement grâce à son attrait touristique et son ambiance unique. La ville séduit avec des sites emblématiques comme le Golden Gate Bridge, Alcatraz et ses célèbres rues en pente. Les visiteur·se·s aiment explorer des quartiers variés comme Chinatown et Mission District, ainsi que profiter de sa gastronomie innovante. Mélange d’histoire, de culture et de modernité, San Francisco offre une atmosphère conviviale et un cadre naturel exceptionnel, entouré par l’océan et les collines californiennes.",
+  },
+  {
+    title: "30 - Buenos Aires, Argentine",
+    img: "/buenos-aires.png",
+    description:
+      "Buenos Aires progresse dans le classement grâce à son dynamisme culturel et son accueil chaleureux. La capitale argentine séduit avec ses quartiers emblématiques comme La Boca, aux façades colorées, et Palermo, connu pour ses cafés et sa vie nocturne. Les visiteur·se·s apprécient ses spectacles de tango, sa gastronomie unique, notamment ses célèbres empanadas et asados, et son riche patrimoine architectural. Buenos Aires mêle élégance européenne et passion latine, offrant une expérience authentique et vibrante à chaque coin de rue.",
+  },
+];
+
+export default function Home() {
+  return (
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        {listCity.map((city, index) => (
+          <section key={index}>
+            <h1>{city.title}</h1>
+            <Image
+              className=""
+              src={city.img}
+              alt={city.title}
+              width={180}
+              height={38}
+              priority
+            />
+            <div>{city.description}</div>
+          </section>
+        ))}
+      </main>
+    </div>
+  );
+}
+
+
+
+
