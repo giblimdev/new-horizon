@@ -1,24 +1,32 @@
+//api/admin/AccessibilityOption/[id]/routes.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-// GET /api/admin/Amenity/[id]
+// GET /api/admin/AccessibilityOption/[id]
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/").pop();
 
     if (!id) {
-      return NextResponse.json({ error: "ID manquant dans l'URL" }, { status: 400 });
+      return NextResponse.json(
+        { error: "ID manquant dans l'URL" },
+        { status: 400 }
+      );
     }
 
-    const amenity = await prisma.amenity.findUnique({
+    const amenity = await prisma.accessibilityOption.findUnique({
       where: { id },
       // Ajoute ici les relations à inclure si besoin
     });
 
     if (!amenity) {
-      return NextResponse.json({ error: "Équipement non trouvé" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Équipement non trouvé" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(amenity, { status: 200 });
@@ -28,14 +36,17 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PUT /api/admin/Amenity/[id]
+// PUT /api/admin/AccessibilityOption/[id]
 export async function PUT(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/").pop();
 
     if (!id) {
-      return NextResponse.json({ error: "ID manquant dans l'URL" }, { status: 400 });
+      return NextResponse.json(
+        { error: "ID manquant dans l'URL" },
+        { status: 400 }
+      );
     }
 
     const body = await req.json();
@@ -45,7 +56,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "Le nom est requis" }, { status: 400 });
     }
 
-    const updated = await prisma.amenity.update({
+    const updated = await prisma.accessibilityOption.update({
       where: { id },
       data: {
         name: body.name,
@@ -59,10 +70,19 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(updated, { status: 200 });
   } catch (error: any) {
-    if (error instanceof PrismaClientKnownRequestError && error.code === "P2025") {
-      return NextResponse.json({ error: "Équipement non trouvé" }, { status: 404 });
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json(
+        { error: "Équipement non trouvé" },
+        { status: 404 }
+      );
     }
-    return NextResponse.json({ error: "Erreur lors de la mise à jour" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur lors de la mise à jour" },
+      { status: 500 }
+    );
   }
 }
 
@@ -73,18 +93,30 @@ export async function DELETE(req: NextRequest) {
     const id = url.pathname.split("/").pop();
 
     if (!id) {
-      return NextResponse.json({ error: "ID manquant dans l'URL" }, { status: 400 });
+      return NextResponse.json(
+        { error: "ID manquant dans l'URL" },
+        { status: 400 }
+      );
     }
 
-    await prisma.amenity.delete({
+    await prisma.accessibilityOption.delete({
       where: { id },
     });
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: any) {
-    if (error instanceof PrismaClientKnownRequestError && error.code === "P2025") {
-      return NextResponse.json({ error: "Équipement non trouvé" }, { status: 404 });
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json(
+        { error: "Équipement non trouvé" },
+        { status: 404 }
+      );
     }
-    return NextResponse.json({ error: "Erreur lors de la suppression" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur lors de la suppression" },
+      { status: 500 }
+    );
   }
 }
