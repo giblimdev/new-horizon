@@ -18,7 +18,10 @@ const LABEL_FILTERS = [
   { label: "Choix Romantique", value: "romantic_choice" },
   { label: "Escale Loisirs", value: "leisure_landing" },
   { label: "Portail Doré", value: "gilded_gateway" },
-  { label: "Hébergement Historique & Culturel", value: "historical_culture_hosting" },
+  {
+    label: "Hébergement Historique & Culturel",
+    value: "historical_culture_hosting",
+  },
   { label: "Hébergement Écologique", value: "eco_hosting" },
   { label: "Lieu Inclusif", value: "inclusive_place" },
   { label: "Base d'Aventure", value: "adventure_base" },
@@ -30,7 +33,7 @@ const LABEL_FILTERS = [
   { label: "Montagne", value: "mountain" },
   { label: "Campagne", value: "countryside" },
   { label: "Désert", value: "desert" },
-  { label: "Urbain", value: "urban" }
+  { label: "Urbain", value: "urban" },
 ];
 
 const INITIAL_DISPLAY_COUNT = 7;
@@ -45,8 +48,8 @@ export default function FilterSideBarLabel() {
     );
   };
 
-  const displayedFilters = showAll 
-    ? LABEL_FILTERS 
+  const displayedFilters = showAll
+    ? LABEL_FILTERS
     : LABEL_FILTERS.slice(0, INITIAL_DISPLAY_COUNT);
 
   const hasMoreItems = LABEL_FILTERS.length > INITIAL_DISPLAY_COUNT;
@@ -66,11 +69,12 @@ export default function FilterSideBarLabel() {
               checked={checked.includes(filter.value)}
               onCheckedChange={() => handleChange(filter.value)}
               id={filter.value}
+              className="w-5 h-5 border-2 border-blue-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-700"
             />
             <span className="text-sm">{filter.label}</span>
           </ShadcnLabel>
         ))}
-        
+
         {hasMoreItems && (
           <button
             onClick={() => setShowAll(!showAll)}

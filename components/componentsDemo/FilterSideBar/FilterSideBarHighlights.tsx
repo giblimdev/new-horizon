@@ -27,7 +27,7 @@ const HIGHLIGHTS_FILTERS = [
   { label: "Randonnée à proximité", value: "hiking_nearby" },
   { label: "Architecture historique", value: "historic_architecture" },
   { label: "Design moderne", value: "modern_design" },
-  { label: "Service de conciergerie", value: "concierge_service" }
+  { label: "Service de conciergerie", value: "concierge_service" },
 ];
 
 const INITIAL_DISPLAY_COUNT = 7;
@@ -42,8 +42,8 @@ export default function FilterSideBarHighlights() {
     );
   };
 
-  const displayedFilters = showAll 
-    ? HIGHLIGHTS_FILTERS 
+  const displayedFilters = showAll
+    ? HIGHLIGHTS_FILTERS
     : HIGHLIGHTS_FILTERS.slice(0, INITIAL_DISPLAY_COUNT);
 
   const hasMoreItems = HIGHLIGHTS_FILTERS.length > INITIAL_DISPLAY_COUNT;
@@ -63,11 +63,12 @@ export default function FilterSideBarHighlights() {
               checked={checked.includes(filter.value)}
               onCheckedChange={() => handleChange(filter.value)}
               id={filter.value}
+              className="w-5 h-5 border-2 border-blue-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-700"
             />
             <span className="text-sm">{filter.label}</span>
           </Label>
         ))}
-        
+
         {hasMoreItems && (
           <button
             onClick={() => setShowAll(!showAll)}

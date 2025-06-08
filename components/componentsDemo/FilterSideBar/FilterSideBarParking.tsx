@@ -25,7 +25,7 @@ const PARKING_FILTERS = [
   { label: "Parking bus/cars", value: "bus_parking" },
   { label: "Réservation parking", value: "parking_reservation" },
   { label: "Accès 24h/24", value: "24h_parking_access" },
-  { label: "Parking proche centre", value: "city_center_parking" }
+  { label: "Parking proche centre", value: "city_center_parking" },
 ];
 
 const INITIAL_DISPLAY_COUNT = 7;
@@ -40,8 +40,8 @@ export default function FilterSideBarParking() {
     );
   };
 
-  const displayedFilters = showAll 
-    ? PARKING_FILTERS 
+  const displayedFilters = showAll
+    ? PARKING_FILTERS
     : PARKING_FILTERS.slice(0, INITIAL_DISPLAY_COUNT);
 
   const hasMoreItems = PARKING_FILTERS.length > INITIAL_DISPLAY_COUNT;
@@ -61,11 +61,12 @@ export default function FilterSideBarParking() {
               checked={checked.includes(filter.value)}
               onCheckedChange={() => handleChange(filter.value)}
               id={filter.value}
+              className="w-5 h-5 border-2 border-blue-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-700"
             />
             <span className="text-sm">{filter.label}</span>
           </Label>
         ))}
-        
+
         {hasMoreItems && (
           <button
             onClick={() => setShowAll(!showAll)}

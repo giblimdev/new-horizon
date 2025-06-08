@@ -27,7 +27,7 @@ const LANDMARK_FILTERS = [
   { label: "Plage du Prado", value: "plage_prado" },
   { label: "Les Terrasses du Port", value: "terrasses_port" },
   { label: "Jardin du Pharo", value: "jardin_pharo" },
-  { label: "Vallon des Auffes", value: "vallon_auffes" }
+  { label: "Vallon des Auffes", value: "vallon_auffes" },
 ];
 
 const INITIAL_DISPLAY_COUNT = 7;
@@ -42,8 +42,8 @@ export default function FilterSideBarLandmark() {
     );
   };
 
-  const displayedFilters = showAll 
-    ? LANDMARK_FILTERS 
+  const displayedFilters = showAll
+    ? LANDMARK_FILTERS
     : LANDMARK_FILTERS.slice(0, INITIAL_DISPLAY_COUNT);
 
   const hasMoreItems = LANDMARK_FILTERS.length > INITIAL_DISPLAY_COUNT;
@@ -63,11 +63,12 @@ export default function FilterSideBarLandmark() {
               checked={checked.includes(filter.value)}
               onCheckedChange={() => handleChange(filter.value)}
               id={filter.value}
+              className="w-5 h-5 border-2 border-blue-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-700"
             />
             <span className="text-sm">{filter.label}</span>
           </ShadcnLabel>
         ))}
-        
+
         {hasMoreItems && (
           <button
             onClick={() => setShowAll(!showAll)}

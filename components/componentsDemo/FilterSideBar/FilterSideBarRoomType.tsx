@@ -27,7 +27,7 @@ const ROOM_TYPE_FILTERS = [
   { label: "Villa", value: "villa" },
   { label: "Chalet", value: "chalet" },
   { label: "Chambre standard", value: "standard" },
-  { label: "Chambre supérieure", value: "superior" }
+  { label: "Chambre supérieure", value: "superior" },
 ];
 
 const INITIAL_DISPLAY_COUNT = 7;
@@ -42,8 +42,8 @@ export default function FilterSideBarRoomType() {
     );
   };
 
-  const displayedFilters = showAll 
-    ? ROOM_TYPE_FILTERS 
+  const displayedFilters = showAll
+    ? ROOM_TYPE_FILTERS
     : ROOM_TYPE_FILTERS.slice(0, INITIAL_DISPLAY_COUNT);
 
   const hasMoreItems = ROOM_TYPE_FILTERS.length > INITIAL_DISPLAY_COUNT;
@@ -63,11 +63,12 @@ export default function FilterSideBarRoomType() {
               checked={checked.includes(filter.value)}
               onCheckedChange={() => handleChange(filter.value)}
               id={filter.value}
+              className="w-5 h-5 border-2 border-blue-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-700"
             />
             <span className="text-sm">{filter.label}</span>
           </ShadcnLabel>
         ))}
-        
+
         {hasMoreItems && (
           <button
             onClick={() => setShowAll(!showAll)}

@@ -32,7 +32,7 @@ const SERVICE_FILTERS = [
   { label: "Location de voitures", value: "car_rental" },
   { label: "Service de navette", value: "shuttle_service" },
   { label: "Animaux acceptés", value: "pets_allowed" },
-  { label: "Zone fumeurs", value: "smoking_area" }
+  { label: "Zone fumeurs", value: "smoking_area" },
 ];
 
 const INITIAL_DISPLAY_COUNT = 7;
@@ -47,8 +47,8 @@ export default function FilterSideBarService() {
     );
   };
 
-  const displayedFilters = showAll 
-    ? SERVICE_FILTERS 
+  const displayedFilters = showAll
+    ? SERVICE_FILTERS
     : SERVICE_FILTERS.slice(0, INITIAL_DISPLAY_COUNT);
 
   const hasMoreItems = SERVICE_FILTERS.length > INITIAL_DISPLAY_COUNT;
@@ -68,11 +68,12 @@ export default function FilterSideBarService() {
               checked={checked.includes(filter.value)}
               onCheckedChange={() => handleChange(filter.value)}
               id={filter.value}
+              className="w-5 h-5 border-2 border-blue-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-700"
             />
             <span className="text-sm">{filter.label}</span>
           </ShadcnLabel>
         ))}
-        
+
         {hasMoreItems && (
           <button
             onClick={() => setShowAll(!showAll)}

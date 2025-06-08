@@ -27,7 +27,7 @@ const NEIGHBORHOOD_FILTERS = [
   { label: "Roucas-Blanc", value: "roucas_blanc" },
   { label: "Bonneveine", value: "bonneveine" },
   { label: "Pointe-Rouge", value: "pointe_rouge" },
-  { label: "Les Goudes", value: "les_goudes" }
+  { label: "Les Goudes", value: "les_goudes" },
 ];
 
 const INITIAL_DISPLAY_COUNT = 7;
@@ -42,8 +42,8 @@ export default function FilterSideBarNeighborhood() {
     );
   };
 
-  const displayedFilters = showAll 
-    ? NEIGHBORHOOD_FILTERS 
+  const displayedFilters = showAll
+    ? NEIGHBORHOOD_FILTERS
     : NEIGHBORHOOD_FILTERS.slice(0, INITIAL_DISPLAY_COUNT);
 
   const hasMoreItems = NEIGHBORHOOD_FILTERS.length > INITIAL_DISPLAY_COUNT;
@@ -63,11 +63,12 @@ export default function FilterSideBarNeighborhood() {
               checked={checked.includes(filter.value)}
               onCheckedChange={() => handleChange(filter.value)}
               id={filter.value}
+              className="w-5 h-5 border-2 border-blue-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-700"
             />
             <span className="text-sm">{filter.label}</span>
           </ShadcnLabel>
         ))}
-        
+
         {hasMoreItems && (
           <button
             onClick={() => setShowAll(!showAll)}
