@@ -1,167 +1,201 @@
-// app/api/admin/AccessibilityOption/[id]/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { z } from "zod"; // Optional: for validation
 
-// Define the expected shape of the PUT request body
-interface UpdateAccessibilityOption {
-  name: string;
-  order?: number;
-  category?: string;
-  icon?: string;
-  description?: string;
-}
+// Optional: Define validation schema
+const accommodationTypeSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
+  // Add other fields based on your model
+});
 
-// Validate ID format (assuming it's a UUID or string)
-const isValidId = (id: string): boolean => {
-  // Example: UUID validation (modify as needed for your use case)
-  const uuidRegex =
-    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-  return uuidRegex.test(id) || !isNaN(Number(id)); // Adjust based on your ID format
-};
-
-// Middleware for authentication (pseudo-code, implement as needed)
-const authenticateRequest = (req: NextRequest): boolean => {
-  // Example: Check for an Authorization header or session
-  // const token = req.headers.get("authorization");
-  // return verifyToken(token);
-  return true; // Replace with actual auth logic
-};
-
-// GET /api/admin/AccessibilityOption/[id]
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").filter(Boolean).pop();
+    const { id } = await params;
 
-    if (!id || !isValidId(id)) {
+    // Validate ID format (if using UUID)
+    if (!id || id.trim() === "") {
       return NextResponse.json(
-        { error: "Invalid or missing ID" },
+        { error: "Invalid accommodation type ID" },
         { status: 400 }
       );
     }
 
-    if (!authenticateRequest(req)) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const amenity = await prisma.accessibilityOption.findUnique({
+    const accommodationType = await prisma.accommodationType.findUnique({
       where: { id },
+      // Optional: include related data
+      // include: {
+      //   accommodations: true,
+      // },
     });
 
-    if (!amenity) {
+    if (!accommodationType) {
       return NextResponse.json(
-        { error: "Accessibility option not found" },
+        { error: "Accommodation type not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(amenity, { status: 200 });
+    return NextResponse.json(accommodationType);
   } catch (error) {
-    console.error("GET AccessibilityOption error:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
-}
+    console.error("GET AccommodationType error:", error);
 
-// PUT /api/admin/AccessibilityOption/[id]
-export async function PUT(req: NextRequest) {
-  try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").filter(Boolean).pop();
-
-    if (!id || !isValidId(id)) {
+    // More specific error handling
+    if (error instanceof Error && error.message.includes("Invalid")) {
       return NextResponse.json(
-        { error: "Invalid or missing ID" },
+        { error: "Invalid accommodation type ID format" },
         { status: 400 }
       );
     }
 
-    if (!authenticateRequest(req)) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    // Validate ID
+    if (!id || id.trim() === "") {
+      return NextResponse.json(
+        { error: "Invalid accommodation type ID" },
+        { status: 400 }
+      );
     }
 
-    const body: UpdateAccessibilityOption = await req.json();
+    const body = await req.json();
 
-    // Validate required fields
-    if (!body.name) {
-      return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    // Optional: Validate request body
+    // const validatedData = accommodationTypeSchema.parse(body);
+
+    // Check if record exists before updating
+    const existingType = await prisma.accommodationType.findUnique({
+      where: { id },
+    });
+
+    if (!existingType) {
+      return NextResponse.json(
+        { error: "Accommodation type not found" },
+        { status: 404 }
+      );
     }
 
-    const updated = await prisma.accessibilityOption.update({
+    const updated = await prisma.accommodationType.update({
       where: { id },
       data: {
-        name: body.name,
-        order: body.order,
-        category: body.category,
-        icon: body.icon,
-        description: body.description,
+        // Filter out undefined values
+        ...Object.fromEntries(
+          Object.entries(body).filter(([_, value]) => value !== undefined)
+        ),
+        updatedAt: new Date(), // If you have this field
       },
     });
 
-    return NextResponse.json(updated, { status: 200 });
-  } catch (error: any) {
-    if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
-    ) {
-      return NextResponse.json(
-        { error: "Accessibility option not found" },
-        { status: 404 }
-      );
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error("PUT AccommodationType error:", error);
+
+    // Handle specific Prisma errors
+    if (error instanceof Error) {
+      if (error.message.includes("Unique constraint")) {
+        return NextResponse.json(
+          { error: "Accommodation type with this name already exists" },
+          { status: 409 }
+        );
+      }
+
+      if (error.message.includes("Invalid")) {
+        return NextResponse.json(
+          { error: "Invalid data format" },
+          { status: 400 }
+        );
+      }
     }
-    console.error("PUT AccessibilityOption error:", error);
+
     return NextResponse.json(
-      { error: "Error updating accessibility option" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
 }
 
-// DELETE /api/admin/AccessibilityOption/[id]
-export async function DELETE(req: NextRequest) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").filter(Boolean).pop();
+    const { id } = await params;
 
-    if (!id || !isValidId(id)) {
+    // Validate ID
+    if (!id || id.trim() === "") {
       return NextResponse.json(
-        { error: "Invalid or missing ID" },
+        { error: "Invalid accommodation type ID" },
         { status: 400 }
       );
     }
 
-    if (!authenticateRequest(req)) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    await prisma.accessibilityOption.delete({
+    // Check if record exists before deleting
+    const existingType = await prisma.accommodationType.findUnique({
       where: { id },
     });
 
-    return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error: any) {
-    if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
-    ) {
+    if (!existingType) {
       return NextResponse.json(
-        { error: "Accessibility option not found" },
+        { error: "Accommodation type not found" },
         { status: 404 }
       );
     }
-    console.error("DELETE AccessibilityOption error:", error);
+
+    // Optional: Check for related records before deletion
+    // const relatedAccommodations = await prisma.accommodation.count({
+    //   where: { accommodationTypeId: id },
+    // });
+
+    // if (relatedAccommodations > 0) {
+    //   return NextResponse.json(
+    //     { error: "Cannot delete accommodation type with existing accommodations" },
+    //     { status: 409 }
+    //   );
+    // }
+
+    await prisma.accommodationType.delete({
+      where: { id },
+    });
+
     return NextResponse.json(
-      { error: "Error deleting accessibility option" },
+      { message: "Accommodation type deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("DELETE AccommodationType error:", error);
+
+    // Handle foreign key constraint errors
+    if (
+      error instanceof Error &&
+      error.message.includes("Foreign key constraint")
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Cannot delete accommodation type with existing accommodations",
+        },
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
-}
-
-// Handle unsupported methods
-export async function handler(req: NextRequest) {
-  return NextResponse.json(
-    { error: `Method ${req.method} Not Allowed` },
-    { status: 405 }
-  );
 }
