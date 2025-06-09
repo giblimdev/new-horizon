@@ -229,11 +229,11 @@ export const hotelAdditionalInfo = [
   {
     id: "uuid1",
     additional_images: [
-      "/hotel/meininger_extra1.png",
-      "/hotel/meininger_extra2.png",
-      "/hotel/meininger_extra3.png",
-      "/hotel/meininger_extra4.png",
-      "/hotel/meininger_extra5.png",
+      "/hotel/meininger1.png",
+      "/hotel/meininger2.png",
+      "/hotel/meininger3.png",
+      "/hotel/meininger4.png",
+      "/hotel/meininger5.png",
     ],
     description:
       "Hôtel moderne au cœur de Marseille avec un excellent rapport qualité-prix, proche des plages et du Vieux-Port.",
@@ -272,11 +272,11 @@ export const hotelAdditionalInfo = [
   {
     id: "uuid2",
     additional_images: [
-      "/hotel/intercontinental_extra1.png",
-      "/hotel/intercontinental_extra2.png",
-      "/hotel/intercontinental_extra3.png",
-      "/hotel/intercontinental_extra4.png",
-      "/hotel/intercontinental_extra5.png",
+      "/hotel/intercontinental1.png",
+      "/hotel/intercontinental2.png",
+      "/hotel/intercontinental3.png",
+      "/hotel/intercontinental4.png",
+      "/hotel/intercontinental5.png",
     ],
     description:
       "Hôtel de luxe historique avec vue sur le Vieux-Port, spa et restaurant gastronomique.",
@@ -313,11 +313,11 @@ export const hotelAdditionalInfo = [
   {
     id: "uuid3",
     additional_images: [
-      "/hotel/mama_extra1.png",
-      "/hotel/mama_extra2.png",
-      "/hotel/mama_extra3.png",
-      "/hotel/mama_extra4.png",
-      "/hotel/mama_extra5.png",
+      "/hotel/mama1.png",
+      "/hotel/mama2.png",
+      "/hotel/mama3.png",
+      "/hotel/mama4.png",
+      "/hotel/mama5.png",
     ],
     description:
       "Hôtel design et convivial avec ambiance jeune, bar et terrasse sur le toit.",
@@ -353,11 +353,11 @@ export const hotelAdditionalInfo = [
   {
     id: "uuid4",
     additional_images: [
-      "/hotel/radisson_extra1.png",
-      "/hotel/radisson_extra2.png",
-      "/hotel/radisson_extra3.png",
-      "/hotel/radisson_extra4.png",
-      "/hotel/radisson_extra5.png",
+      "/hotel/radisson1.png",
+      "/hotel/radisson2.png",
+      "/hotel/radisson_3.png",
+      "/hotel/radisson_4.png",
+      "/hotel/radisson_5.png",
     ],
     description:
       "Hôtel moderne avec vue panoramique sur le Vieux-Port et la Méditerranée.",

@@ -14,20 +14,7 @@ datasource db {
 //////////////////////////////
 ////     Tables auth     /////
 //////////////////////////////
-/**
- * 🔐 Tables d'authentification
- * User
- * Rôle : Stocke les informations des utilisateurs de la plateforme
- * typescript
- * // Exemple d'utilisateur
- * {
- * id: "user_123",
- * name: "Marie Dupont",
- * email: "marie.dupont@email.com",
- * emailVerified: true,
- * image: "https://avatar.com/marie.jpg"
- * }
- */
+
 model User {
   id            String   @id @default(cuid())
   name          String
@@ -44,20 +31,6 @@ model User {
   @@map("users")
 }
 
-/**
- * Session
- * Rôle : Gère les sessions actives des utilisateurs connectés
- * typescript
- * // Exemple de session
- * {
- * id: "session_456",
- * userId: "user_123",
- * token: "eyJhbGciOiJIUzI1NiIs...",
- * expiresAt: "2025-06-08T01:29:00Z",
- * ipAddress: "192.168.1.100",
- * userAgent: "Mozilla/5.0..."
- * }
- */
 model Session {
   id        String   @id @default(cuid())
   userId    String
@@ -73,20 +46,6 @@ model Session {
   @@map("sessions")
 }
 
-/**
- * Account
- * Rôle : Stocke les méthodes de connexion (OAuth, email/password)
- * typescript
- * // Exemple de compte Google OAuth
- * {
- * id: "account_789",
- * userId: "user_123",
- * providerId: "google",
- * accessToken: "ya29.a0AfH6SMC...",
- * refreshToken: "1//04...",
- * scope: "openid email profile"
- * }
- */
 model Account {
   id                    String    @id @default(cuid())
   userId                String
@@ -122,18 +81,6 @@ model Verification {
 ////     Tables touristiques     /////
 //////////////////////////////////////
 
-/**
- * 🌍 Tables géographiques
- * Country
- * Rôle : Référentiel des pays
- * typescript
- * // Exemple de pays
- * {
- * id: "country_fr",
- * name: "France",
- * code: "FR"
- * }
- */
 model Country {
   id        String   @id @default(uuid())
   name      String
@@ -264,16 +211,9 @@ model HotelGroup {
   id              String   @id @default(uuid())
   name            String // group ou professionnel gérer par un particulier
   order           Int?     @default(100)
-  code            String   @unique
   description     String?
   website         String?
   logoUrl         String?
-  foundedYear     Int?
-  headquarters    String?
-  totalProperties Int      @default(0)
-  totalRooms      Int      @default(0)
-  marketCap       Float?
-  annualRevenue   Float?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 

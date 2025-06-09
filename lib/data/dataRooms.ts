@@ -1,9 +1,9 @@
 export const roomDetails = [
   {
     hotel_id: "uuid1",
-    room_photos: [
+    room_photos: [ 
       "/hotel/uuid1ChT11.png",
-      "/hotel/uuid1ChT12.png",
+      "/hotel/uuid1ChT12.png", 
       "/hotel/uuid1ChT13.png",
     ],
     refund_policy: "Annulation gratuite jusqu'à 24h avant l'arrivée",
