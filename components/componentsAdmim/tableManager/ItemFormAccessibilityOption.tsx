@@ -1,89 +1,249 @@
-/*
-model AccessibilityOption {
-  id                             String                           @id @default(uuid())
-  name                           String
-  order                          Int?                             @default(100)
-  code                           String                           @unique
-  description                    String?
-  category                       String
-  icon                           String?
-  isRequired                     Boolean                          @default(false)
-  createdAt                      DateTime                         @default(now())
-  updatedAt                      DateTime                         @updatedAt
-  HotelCardToAccessibilityOption HotelCardToAccessibilityOption[]
-
-  @@map("accessibility_options")
-}
-*/
-// ItemFormCity.tsx
 import { Button } from "@/components/ui/button";
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import {City} from "@/lib/generated/prisma/client";
+//import { AccessibilityOption } from "@/lib/generated/prisma/client";
 
-type ItemFormProps<T extends Record<string, any>> = {
-  fields: (keyof T)[];
-  initialData?: Partial<T>;
-  onSubmit: (item: T) => void;
+type AccessibilityOptionForm = {
+  name: string;
+  order: number | null;
+  code: string;
+  description: string | null;
+  category: string;
+  icon: string | null;
+};
+
+type ItemFormAccessibilityOptionProps = {
+  initialData?: Partial<AccessibilityOptionForm>;
+  onSubmit: (item: AccessibilityOptionForm) => void;
   onCancel: () => void;
 };
 
-export default function ItemForm<T extends Record<string, any>>({
-  fields,
+const CATEGORIES = ["Location", "Amenity", "Service", "View", "Offer", "Food"];
+
+export default function ItemFormAccessibilityOption({
   initialData = {},
   onSubmit,
   onCancel,
-}: ItemFormProps<T>) {
-  // Etat local permissif pour supporter tous les types de champs
-  const [form, setForm] = useState<Partial<Record<keyof T, any>>>(() => {
-    const initial: Partial<Record<keyof T, any>> = {};
-    fields.forEach((field) => {
-      initial[field] = initialData[field] ?? undefined;
-    });
-    return initial;
+}: ItemFormAccessibilityOptionProps) {
+  const [form, setForm] = useState<AccessibilityOptionForm>({
+    name: initialData.name ?? "",
+    order: initialData.order ?? null,
+    code: initialData.code ?? "",
+    description: initialData.description ?? null,
+    category: initialData.category ?? "Amenity",
+    icon: initialData.icon ?? null,
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const [jsonValue, setJsonValue] = useState(() =>
+    JSON.stringify(form, null, 2)
+  );
+
+  React.useEffect(() => {
+    setJsonValue(JSON.stringify(form, null, 2));
+  }, [form]);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]:
+        type === "number"
+          ? value === ""
+            ? null
+            : Number(value)
+          : value === ""
+          ? null
+          : value,
     }));
+  };
+
+  const handleJsonChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setJsonValue(value);
+    try {
+      const parsed = JSON.parse(value);
+      setForm({
+        name: parsed.name ?? "",
+        order: parsed.order ?? null,
+        code: parsed.code ?? "",
+        description: parsed.description ?? null,
+        category: parsed.category ?? "Amenity",
+        icon: parsed.icon ?? null,
+      });
+    } catch {
+      // JSON invalide : ne rien faire
+    }
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const result = {} as T;
-    fields.forEach((field) => {
-      result[field] = form[field];
-    });
-    onSubmit(result);
+    try {
+      const parsed = JSON.parse(jsonValue);
+      onSubmit({
+        name: parsed.name ?? "",
+        order: parsed.order ?? null,
+        code: parsed.code ?? "",
+        description: parsed.description ?? null,
+        category: parsed.category ?? "Amenity",
+        icon: parsed.icon ?? null,
+      });
+    } catch {
+      alert("Le JSON n'est pas valide.");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-5 mb-4 bg-amber-100/10">
-      {fields.map((field) => (
-        <div key={String(field)} className="mb-2">
-          <label className="mr-2 font-medium" htmlFor={String(field)}>
-            {String(field)}:
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 p-6 bg-white rounded-lg shadow-sm border border-slate-200"
+    >
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label
+            className="block text-sm font-medium text-slate-700 mb-1"
+            htmlFor="name"
+          >
+            Nom *
           </label>
           <input
-            id={String(field)}
-            name={String(field)}
-            value={form[field] ?? ""}
+            id="name"
+            name="name"
+            value={form.name ?? ""}
             onChange={handleChange}
-            className="border px-2 py-1 rounded"
+            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="text"
-            autoComplete="off"
+            required
           />
         </div>
-      ))}
-      <Button type="submit" className="btn btn-success mr-2">
-        Save
-      </Button>
-      <button type="button" onClick={onCancel} className="btn btn-secondary">
-        Cancel
-      </button>
+
+        <div>
+          <label
+            className="block text-sm font-medium text-slate-700 mb-1"
+            htmlFor="code"
+          >
+            Code (unique) *
+          </label>
+          <input
+            id="code"
+            name="code"
+            value={form.code ?? ""}
+            onChange={handleChange}
+            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="text"
+            required
+          />
+        </div>
+
+        <div>
+          <label
+            className="block text-sm font-medium text-slate-700 mb-1"
+            htmlFor="order"
+          >
+            Ordre
+          </label>
+          <input
+            id="order"
+            name="order"
+            value={form.order ?? ""}
+            onChange={handleChange}
+            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="number"
+            min="1"
+          />
+        </div>
+
+        <div>
+          <label
+            className="block text-sm font-medium text-slate-700 mb-1"
+            htmlFor="category"
+          >
+            Catégorie *
+          </label>
+          <select
+            id="category"
+            name="category"
+            value={form.category ?? "Amenity"}
+            onChange={handleChange}
+            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="sm:col-span-2">
+          <label
+            className="block text-sm font-medium text-slate-700 mb-1"
+            htmlFor="icon"
+          >
+            Icône (URL)
+          </label>
+          <input
+            id="icon"
+            name="icon"
+            value={form.icon ?? ""}
+            onChange={handleChange}
+            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="text"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label
+          className="block text-sm font-medium text-slate-700 mb-1"
+          htmlFor="description"
+        >
+          Description
+        </label>
+        <textarea
+          id="description"
+          name="description"
+          value={form.description ?? ""}
+          onChange={handleChange}
+          className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows={3}
+        />
+      </div>
+
+      <div className="mt-4">
+        <label
+          className="block text-sm font-medium text-slate-700 mb-1"
+          htmlFor="json"
+        >
+          JSON généré (éditable)
+        </label>
+        <textarea
+          id="json"
+          name="json"
+          value={jsonValue}
+          onChange={handleJsonChange}
+          className="w-full border border-slate-300 rounded-md px-3 py-2 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows={8}
+        />
+      </div>
+
+      <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          className="hover:bg-slate-100"
+        >
+          Annuler
+        </Button>
+        <Button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          Enregistrer
+        </Button>
+      </div>
     </form>
   );
 }
-/* le ormulaire dois aussi presenter un champ pour accepter un json representant les informationq de la table */

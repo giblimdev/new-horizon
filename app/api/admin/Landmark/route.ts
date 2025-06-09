@@ -1,17 +1,31 @@
-// @/app/api/admin/Landmark/route.ts
+// /app/api/admin/Landmark/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// GET /api/adim/Landmark
+// GET /api/admin/Landmark
 export async function GET() {
-  const amenities = await prisma.landmark.findMany();
-  return NextResponse.json(amenities);
+  try {
+    const data = await prisma.landmark.findMany();
+    return NextResponse.json(data, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Erreur lors de la récupération des points d'intérêt" },
+      { status: 500 }
+    );
+  }
 }
 
-// POST /api/adim/Landmark
+// POST /api/admin/Landmark
 export async function POST(req: NextRequest) {
-  const data = await req.json();
-  const amenity = await prisma.landmark.create({ data });
-  return NextResponse.json(amenity, { status: 201 });
+  try {
+    const body = await req.json();
+    const item = await prisma.landmark.create({ data: body });
+    return NextResponse.json(item, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Échec de la création du point d'intérêt" },
+      { status: 400 }
+    );
+  }
 }

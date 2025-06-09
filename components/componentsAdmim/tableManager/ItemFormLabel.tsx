@@ -1,96 +1,196 @@
-/*
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 
-model Label {
-  id          String   @id @default(uuid())
-  name        String
-  order       Int?     @default(100)
-  code        String   @unique
-  description String?
-  category    String
-  icon        String?
-  color       String?
-  priority    Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  HotelDetails     HotelDetails?      @relation(fields: [hotelDetailsId], references: [id])
-  hotelDetailsId   String?
-  HotelCardToLabel HotelCardToLabel[]
-
-  @@map("labels")
+interface LabelFormValues {
+  name: string;
+  code: string;
+  category: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+  priority?: number;
 }
 
+const CATEGORIES = ["Général", "Tarif", "Statut", "Autre"];
 
-
-*/
-// ItemFormHotelLabel.tsx
-import { Button } from "@/components/ui/button";
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import {Label} from "@/lib/generated/prisma/client";
-
-type ItemFormProps<T extends Record<string, any>> = {
-  fields: (keyof T)[];
-  initialData?: Partial<T>;
-  onSubmit: (item: T) => void;
-  onCancel: () => void;
-};
-
-export default function ItemForm<T extends Record<string, any>>({
-  fields,
+export default function ItemFormLabel({
   initialData = {},
   onSubmit,
   onCancel,
-}: ItemFormProps<T>) {
-  // Etat local permissif pour supporter tous les types de champs
-  const [form, setForm] = useState<Partial<Record<keyof T, any>>>(() => {
-    const initial: Partial<Record<keyof T, any>> = {};
-    fields.forEach((field) => {
-      initial[field] = initialData[field] ?? undefined;
-    });
-    return initial;
+}: {
+  initialData?: Partial<LabelFormValues>;
+  onSubmit: (data: LabelFormValues) => void;
+  onCancel: () => void;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch,
+  } = useForm<LabelFormValues>({
+    defaultValues: {
+      name: initialData.name || "",
+      code: initialData.code || "",
+      category: initialData.category || "",
+      description: initialData.description || "",
+      icon: initialData.icon || "",
+      color: initialData.color || "",
+      priority: initialData.priority ?? 0,
+    },
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const result = {} as T;
-    fields.forEach((field) => {
-      result[field] = form[field];
-    });
-    onSubmit(result);
-  };
+  const colorValue = watch("color");
 
   return (
-    <form onSubmit={handleSubmit} className="p-5 mb-4 bg-amber-100/10">
-      {fields.map((field) => (
-        <div key={String(field)} className="mb-2">
-          <label className="mr-2 font-medium" htmlFor={String(field)}>
-            {String(field)}:
+    <form
+      className="space-y-6"
+      onSubmit={handleSubmit(onSubmit)}
+      autoComplete="off"
+    >
+      <div>
+        <label className="block font-medium mb-1" htmlFor="name">
+          Nom <span className="text-red-500">*</span>
+        </label>
+        <input
+          id="name"
+          type="text"
+          className={`w-full px-3 py-2 border rounded ${
+            errors.name ? "border-red-400" : "border-slate-300"
+          }`}
+          {...register("name", { required: "Le nom est obligatoire" })}
+        />
+        {errors.name && (
+          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="block font-medium mb-1" htmlFor="code">
+          Code <span className="text-red-500">*</span>
+        </label>
+        <input
+          id="code"
+          type="text"
+          className={`w-full px-3 py-2 border rounded uppercase tracking-wide font-mono ${
+            errors.code ? "border-red-400" : "border-slate-300"
+          }`}
+          {...register("code", {
+            required: "Le code est obligatoire",
+            pattern: {
+              value: /^[A-Z0-9_]+$/,
+              message: "Utilisez des majuscules, chiffres ou _",
+            },
+            minLength: { value: 2, message: "Au moins 2 caractères" },
+          })}
+        />
+        {errors.code && (
+          <p className="text-red-500 text-xs mt-1">{errors.code.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="block font-medium mb-1" htmlFor="category">
+          Catégorie <span className="text-red-500">*</span>
+        </label>
+        <select
+          id="category"
+          className={`w-full px-3 py-2 border rounded ${
+            errors.category ? "border-red-400" : "border-slate-300"
+          }`}
+          {...register("category", {
+            required: "La catégorie est obligatoire",
+          })}
+        >
+          <option value="">-- Sélectionner --</option>
+          {CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+        {errors.category && (
+          <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="block font-medium mb-1" htmlFor="description">
+          Description
+        </label>
+        <textarea
+          id="description"
+          className="w-full px-3 py-2 border border-slate-300 rounded"
+          rows={2}
+          {...register("description")}
+        />
+      </div>
+
+      <div className="flex gap-4">
+        <div className="flex-1">
+          <label className="block font-medium mb-1" htmlFor="icon">
+            Icône (emoji ou texte)
           </label>
           <input
-            id={String(field)}
-            name={String(field)}
-            value={form[field] ?? ""}
-            onChange={handleChange}
-            className="border px-2 py-1 rounded"
+            id="icon"
             type="text"
-            autoComplete="off"
+            maxLength={2}
+            className="w-full px-3 py-2 border border-slate-300 rounded"
+            {...register("icon")}
+            placeholder="🏷️"
           />
         </div>
-      ))}
-      <Button type="submit" className="btn btn-success mr-2">
-        Save
-      </Button>
-      <button type="button" onClick={onCancel} className="btn btn-secondary">
-        Cancel
-      </button>
+        <div className="flex-1">
+          <label className="block font-medium mb-1" htmlFor="color">
+            Couleur (hex ou nom CSS)
+          </label>
+          <input
+            id="color"
+            type="color"
+            className="w-12 h-10 p-0 border border-slate-300 rounded"
+            {...register("color")}
+            style={{ background: colorValue || "#fff" }}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block font-medium mb-1" htmlFor="priority">
+          Priorité
+        </label>
+        <input
+          id="priority"
+          type="number"
+          className="w-full px-3 py-2 border border-slate-300 rounded"
+          {...register("priority", {
+            valueAsNumber: true,
+            min: { value: 0, message: "Minimum 0" },
+            max: { value: 100, message: "Maximum 100" },
+          })}
+        />
+        {errors.priority && (
+          <p className="text-red-500 text-xs mt-1">{errors.priority.message}</p>
+        )}
+      </div>
+
+      <div className="flex gap-3 justify-end pt-4 border-t border-slate-100">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          className="hover:bg-slate-100"
+          disabled={isSubmitting}
+        >
+          Annuler
+        </Button>
+        <Button
+          type="submit"
+          className="bg-gradient-to-r from-orange-600 to-orange-700 text-white hover:from-orange-700 hover:to-orange-800"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Enregistrement..." : "Enregistrer"}
+        </Button>
+      </div>
     </form>
   );
 }

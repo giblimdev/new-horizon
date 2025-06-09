@@ -1,94 +1,132 @@
-/*
-model HotelDetails {
-  id          String  @id @default(uuid())
-  idHotelCard String
-  description String?
-  addressId   String
+// ItemFormHotelDetail.tsx
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+import React from "react";
+import { useForm } from "react-hook-form";
 
-  address Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
-
-  RoomAmenity               RoomAmenity[]
-  Label                     Label[]
-  HotelCard                 HotelCard[]
-  HotelDetailsToRoomAmenity HotelDetailsToRoomAmenity[]
-
-  @@map("hotel_details")
-}
-
-
-
-*/
-// ItemFormHotelDetails.tsx
-import { Button } from "@/components/ui/button";
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import {HotelDetails} from "@/lib/generated/prisma/client";
-
-type ItemFormProps<T extends Record<string, any>> = {
-  fields: (keyof T)[];
-  initialData?: Partial<T>;
-  onSubmit: (item: T) => void;
-  onCancel: () => void;
+type HotelDetailFormValues = {
+  idHotelCard: string;
+  description?: string | null;
 };
 
-export default function ItemForm<T extends Record<string, any>>({
-  fields,
+type Props = {
+  initialData?: Partial<HotelDetailFormValues>;
+  onSubmit: (data: HotelDetailFormValues) => void;
+  onCancel: () => void;
+  hotelCardOptions: { id: string; name: string }[];
+};
+
+export default function ItemFormHotelDetail({
   initialData = {},
   onSubmit,
   onCancel,
-}: ItemFormProps<T>) {
-  // Etat local permissif pour supporter tous les types de champs
-  const [form, setForm] = useState<Partial<Record<keyof T, any>>>(() => {
-    const initial: Partial<Record<keyof T, any>> = {};
-    fields.forEach((field) => {
-      initial[field] = initialData[field] ?? undefined;
-    });
-    return initial;
+  hotelCardOptions,
+}: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<HotelDetailFormValues>({
+    defaultValues: {
+      idHotelCard: initialData.idHotelCard ?? "",
+      description: initialData.description ?? "",
+    },
+    mode: "onChange",
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const result = {} as T;
-    fields.forEach((field) => {
-      result[field] = form[field];
-    });
-    onSubmit(result);
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="p-5 mb-4 bg-amber-100/10">
-      {fields.map((field) => (
-        <div key={String(field)} className="mb-2">
-          <label className="mr-2 font-medium" htmlFor={String(field)}>
-            {String(field)}:
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 space-y-6"
+      aria-label="Formulaire détail hôtel"
+    >
+      <div className="grid grid-cols-1 gap-6">
+        {/* Sélecteur de fiche hôtel */}
+        <div className="space-y-2">
+          <label
+            htmlFor="idHotelCard"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+          >
+            Fiche hôtel <span className="text-red-500">*</span>
           </label>
-          <input
-            id={String(field)}
-            name={String(field)}
-            value={form[field] ?? ""}
-            onChange={handleChange}
-            className="border px-2 py-1 rounded"
-            type="text"
-            autoComplete="off"
-          />
+          <select
+            id="idHotelCard"
+            {...register("idHotelCard", {
+              required: "La fiche hôtel est requise",
+            })}
+            className={`block w-full rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 ${
+              errors.idHotelCard
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-purple-500"
+            }`}
+            aria-invalid={errors.idHotelCard ? "true" : "false"}
+            aria-describedby={
+              errors.idHotelCard ? "idHotelCard-error" : undefined
+            }
+          >
+            <option value="">Sélectionnez une fiche hôtel…</option>
+            {hotelCardOptions.map((hotel) => (
+              <option key={hotel.id} value={hotel.id}>
+                {hotel.name}
+              </option>
+            ))}
+          </select>
+          {errors.idHotelCard && (
+            <p id="idHotelCard-error" className="text-sm text-red-600">
+              {errors.idHotelCard.message}
+            </p>
+          )}
         </div>
-      ))}
-      <Button type="submit" className="btn btn-success mr-2">
-        Save
-      </Button>
-      <button type="button" onClick={onCancel} className="btn btn-secondary">
-        Cancel
-      </button>
+
+        {/* Description */}
+        <div className="space-y-2">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            {...register("description", {
+              maxLength: { value: 1000, message: "Maximum 1000 caractères" },
+            })}
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            rows={4}
+            placeholder="Décrivez les détails de l'hôtel (optionnel)"
+            aria-invalid={errors.description ? "true" : "false"}
+            aria-describedby={
+              errors.description ? "description-error" : undefined
+            }
+          />
+          {errors.description && (
+            <p id="description-error" className="text-sm text-red-600">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Boutons */}
+      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
+        >
+          Annuler
+        </button>
+        <button
+          type="submit"
+          disabled={isSubmitting || !isValid}
+          className={`px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors ${
+            isSubmitting || !isValid
+              ? "bg-purple-400 cursor-not-allowed"
+              : "bg-purple-600 hover:bg-purple-700"
+          }`}
+        >
+          {isSubmitting ? "Enregistrement..." : "Enregistrer"}
+        </button>
+      </div>
     </form>
   );
 }

@@ -2,47 +2,41 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
+// GET /api/admin/HotelDetails
 export async function GET() {
   try {
-    const data = await prisma.hotelDetails.findMany();
-    return NextResponse.json({ success: true, data });
-  } catch (error) {
-    console.error("GET HotelDetails error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Erreur serveur lors de la récupération des labels.",
+    const data = await prisma.hotelDetails.findMany({
+      include: {
+        HotelCard: { select: { name: true } }, // Affichage enrichi (optionnel)
       },
+      orderBy: { createdAt: "desc" }, // Tri côté DB
+    });
+    return NextResponse.json(data, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Erreur lors de la récupération des détails d'hôtel" },
       { status: 500 }
     );
   }
 }
 
+// POST /api/admin/HotelDetails
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const item = await prisma.hotelDetails.create({ data: body });
-    return NextResponse.json({ success: true, data: item }, { status: 201 });
+    const item = await prisma.hotelDetails.create({
+      data: {
+        idHotelCard: body.idHotelCard,
+        description: body.description,
+        addressId: body.addressId,
+      },
+    });
+    return NextResponse.json(item, { status: 201 });
   } catch (error) {
-    console.error("POST HotelDetails error:", error);
-    if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Un champ unique existe déjà (conflit d'unicité).",
-        },
-        { status: 400 }
-      );
-    }
     return NextResponse.json(
-      { success: false, error: "Erreur serveur lors de la création." },
-      { status: 500 }
+      { error: "Échec de la création du détail d'hôtel" },
+      { status: 400 }
     );
   }
 }

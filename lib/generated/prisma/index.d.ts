@@ -15,56 +15,17 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model User
- * ///////////////////////////
- * /     Tables auth     /////
- * ///////////////////////////
- * *
- *  * 🔐 Tables d'authentification
- *  * User
- *  * Rôle : Stocke les informations des utilisateurs de la plateforme
- *  * typescript
- *  * // Exemple d'utilisateur
- *  * {
- *  * id: "user_123",
- *  * name: "Marie Dupont",
- *  * email: "marie.dupont@email.com",
- *  * emailVerified: true,
- *  * image: "https://avatar.com/marie.jpg"
- *  * }
+ * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
  * Model Session
- * *
- *  * Session
- *  * Rôle : Gère les sessions actives des utilisateurs connectés
- *  * typescript
- *  * // Exemple de session
- *  * {
- *  * id: "session_456",
- *  * userId: "user_123",
- *  * token: "eyJhbGciOiJIUzI1NiIs...",
- *  * expiresAt: "2025-06-08T01:29:00Z",
- *  * ipAddress: "192.168.1.100",
- *  * userAgent: "Mozilla/5.0..."
- *  * }
+ * 
  */
 export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
 /**
  * Model Account
- * *
- *  * Account
- *  * Rôle : Stocke les méthodes de connexion (OAuth, email/password)
- *  * typescript
- *  * // Exemple de compte Google OAuth
- *  * {
- *  * id: "account_789",
- *  * userId: "user_123",
- *  * providerId: "google",
- *  * accessToken: "ya29.a0AfH6SMC...",
- *  * refreshToken: "1//04...",
- *  * scope: "openid email profile"
- *  * }
+ * 
  */
 export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
 /**
@@ -74,17 +35,7 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
 /**
  * Model Country
- * *
- *  * 🌍 Tables géographiques
- *  * Country
- *  * Rôle : Référentiel des pays
- *  * typescript
- *  * // Exemple de pays
- *  * {
- *  * id: "country_fr",
- *  * name: "France",
- *  * code: "FR"
- *  * }
+ * 
  */
 export type Country = $Result.DefaultSelection<Prisma.$CountryPayload>
 /**
@@ -16737,36 +16688,19 @@ export namespace Prisma {
 
   export type HotelGroupAvgAggregateOutputType = {
     order: number | null
-    foundedYear: number | null
-    totalProperties: number | null
-    totalRooms: number | null
-    marketCap: number | null
-    annualRevenue: number | null
   }
 
   export type HotelGroupSumAggregateOutputType = {
     order: number | null
-    foundedYear: number | null
-    totalProperties: number | null
-    totalRooms: number | null
-    marketCap: number | null
-    annualRevenue: number | null
   }
 
   export type HotelGroupMinAggregateOutputType = {
     id: string | null
     name: string | null
     order: number | null
-    code: string | null
     description: string | null
     website: string | null
     logoUrl: string | null
-    foundedYear: number | null
-    headquarters: string | null
-    totalProperties: number | null
-    totalRooms: number | null
-    marketCap: number | null
-    annualRevenue: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -16775,16 +16709,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     order: number | null
-    code: string | null
     description: string | null
     website: string | null
     logoUrl: string | null
-    foundedYear: number | null
-    headquarters: string | null
-    totalProperties: number | null
-    totalRooms: number | null
-    marketCap: number | null
-    annualRevenue: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -16793,16 +16720,9 @@ export namespace Prisma {
     id: number
     name: number
     order: number
-    code: number
     description: number
     website: number
     logoUrl: number
-    foundedYear: number
-    headquarters: number
-    totalProperties: number
-    totalRooms: number
-    marketCap: number
-    annualRevenue: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -16811,36 +16731,19 @@ export namespace Prisma {
 
   export type HotelGroupAvgAggregateInputType = {
     order?: true
-    foundedYear?: true
-    totalProperties?: true
-    totalRooms?: true
-    marketCap?: true
-    annualRevenue?: true
   }
 
   export type HotelGroupSumAggregateInputType = {
     order?: true
-    foundedYear?: true
-    totalProperties?: true
-    totalRooms?: true
-    marketCap?: true
-    annualRevenue?: true
   }
 
   export type HotelGroupMinAggregateInputType = {
     id?: true
     name?: true
     order?: true
-    code?: true
     description?: true
     website?: true
     logoUrl?: true
-    foundedYear?: true
-    headquarters?: true
-    totalProperties?: true
-    totalRooms?: true
-    marketCap?: true
-    annualRevenue?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -16849,16 +16752,9 @@ export namespace Prisma {
     id?: true
     name?: true
     order?: true
-    code?: true
     description?: true
     website?: true
     logoUrl?: true
-    foundedYear?: true
-    headquarters?: true
-    totalProperties?: true
-    totalRooms?: true
-    marketCap?: true
-    annualRevenue?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -16867,16 +16763,9 @@ export namespace Prisma {
     id?: true
     name?: true
     order?: true
-    code?: true
     description?: true
     website?: true
     logoUrl?: true
-    foundedYear?: true
-    headquarters?: true
-    totalProperties?: true
-    totalRooms?: true
-    marketCap?: true
-    annualRevenue?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -16972,16 +16861,9 @@ export namespace Prisma {
     id: string
     name: string
     order: number | null
-    code: string
     description: string | null
     website: string | null
     logoUrl: string | null
-    foundedYear: number | null
-    headquarters: string | null
-    totalProperties: number
-    totalRooms: number
-    marketCap: number | null
-    annualRevenue: number | null
     createdAt: Date
     updatedAt: Date
     _count: HotelGroupCountAggregateOutputType | null
@@ -17009,16 +16891,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     order?: boolean
-    code?: boolean
     description?: boolean
     website?: boolean
     logoUrl?: boolean
-    foundedYear?: boolean
-    headquarters?: boolean
-    totalProperties?: boolean
-    totalRooms?: boolean
-    marketCap?: boolean
-    annualRevenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     HotelCard?: boolean | HotelGroup$HotelCardArgs<ExtArgs>
@@ -17029,16 +16904,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     order?: boolean
-    code?: boolean
     description?: boolean
     website?: boolean
     logoUrl?: boolean
-    foundedYear?: boolean
-    headquarters?: boolean
-    totalProperties?: boolean
-    totalRooms?: boolean
-    marketCap?: boolean
-    annualRevenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["hotelGroup"]>
@@ -17047,16 +16915,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     order?: boolean
-    code?: boolean
     description?: boolean
     website?: boolean
     logoUrl?: boolean
-    foundedYear?: boolean
-    headquarters?: boolean
-    totalProperties?: boolean
-    totalRooms?: boolean
-    marketCap?: boolean
-    annualRevenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["hotelGroup"]>
@@ -17065,21 +16926,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     order?: boolean
-    code?: boolean
     description?: boolean
     website?: boolean
     logoUrl?: boolean
-    foundedYear?: boolean
-    headquarters?: boolean
-    totalProperties?: boolean
-    totalRooms?: boolean
-    marketCap?: boolean
-    annualRevenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type HotelGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "order" | "code" | "description" | "website" | "logoUrl" | "foundedYear" | "headquarters" | "totalProperties" | "totalRooms" | "marketCap" | "annualRevenue" | "createdAt" | "updatedAt", ExtArgs["result"]["hotelGroup"]>
+  export type HotelGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "order" | "description" | "website" | "logoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["hotelGroup"]>
   export type HotelGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     HotelCard?: boolean | HotelGroup$HotelCardArgs<ExtArgs>
     _count?: boolean | HotelGroupCountOutputTypeDefaultArgs<ExtArgs>
@@ -17096,16 +16950,9 @@ export namespace Prisma {
       id: string
       name: string
       order: number | null
-      code: string
       description: string | null
       website: string | null
       logoUrl: string | null
-      foundedYear: number | null
-      headquarters: string | null
-      totalProperties: number
-      totalRooms: number
-      marketCap: number | null
-      annualRevenue: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["hotelGroup"]>
@@ -17535,16 +17382,9 @@ export namespace Prisma {
     readonly id: FieldRef<"HotelGroup", 'String'>
     readonly name: FieldRef<"HotelGroup", 'String'>
     readonly order: FieldRef<"HotelGroup", 'Int'>
-    readonly code: FieldRef<"HotelGroup", 'String'>
     readonly description: FieldRef<"HotelGroup", 'String'>
     readonly website: FieldRef<"HotelGroup", 'String'>
     readonly logoUrl: FieldRef<"HotelGroup", 'String'>
-    readonly foundedYear: FieldRef<"HotelGroup", 'Int'>
-    readonly headquarters: FieldRef<"HotelGroup", 'String'>
-    readonly totalProperties: FieldRef<"HotelGroup", 'Int'>
-    readonly totalRooms: FieldRef<"HotelGroup", 'Int'>
-    readonly marketCap: FieldRef<"HotelGroup", 'Float'>
-    readonly annualRevenue: FieldRef<"HotelGroup", 'Float'>
     readonly createdAt: FieldRef<"HotelGroup", 'DateTime'>
     readonly updatedAt: FieldRef<"HotelGroup", 'DateTime'>
   }
@@ -21525,7 +21365,6 @@ export namespace Prisma {
     description: string | null
     category: string | null
     icon: string | null
-    isRequired: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -21538,7 +21377,6 @@ export namespace Prisma {
     description: string | null
     category: string | null
     icon: string | null
-    isRequired: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -21551,7 +21389,6 @@ export namespace Prisma {
     description: number
     category: number
     icon: number
-    isRequired: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -21574,7 +21411,6 @@ export namespace Prisma {
     description?: true
     category?: true
     icon?: true
-    isRequired?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -21587,7 +21423,6 @@ export namespace Prisma {
     description?: true
     category?: true
     icon?: true
-    isRequired?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -21600,7 +21435,6 @@ export namespace Prisma {
     description?: true
     category?: true
     icon?: true
-    isRequired?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -21700,7 +21534,6 @@ export namespace Prisma {
     description: string | null
     category: string
     icon: string | null
-    isRequired: boolean
     createdAt: Date
     updatedAt: Date
     _count: AccessibilityOptionCountAggregateOutputType | null
@@ -21732,7 +21565,6 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     icon?: boolean
-    isRequired?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     HotelCardToAccessibilityOption?: boolean | AccessibilityOption$HotelCardToAccessibilityOptionArgs<ExtArgs>
@@ -21747,7 +21579,6 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     icon?: boolean
-    isRequired?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["accessibilityOption"]>
@@ -21760,7 +21591,6 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     icon?: boolean
-    isRequired?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["accessibilityOption"]>
@@ -21773,12 +21603,11 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     icon?: boolean
-    isRequired?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AccessibilityOptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "order" | "code" | "description" | "category" | "icon" | "isRequired" | "createdAt" | "updatedAt", ExtArgs["result"]["accessibilityOption"]>
+  export type AccessibilityOptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "order" | "code" | "description" | "category" | "icon" | "createdAt" | "updatedAt", ExtArgs["result"]["accessibilityOption"]>
   export type AccessibilityOptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     HotelCardToAccessibilityOption?: boolean | AccessibilityOption$HotelCardToAccessibilityOptionArgs<ExtArgs>
     _count?: boolean | AccessibilityOptionCountOutputTypeDefaultArgs<ExtArgs>
@@ -21799,7 +21628,6 @@ export namespace Prisma {
       description: string | null
       category: string
       icon: string | null
-      isRequired: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["accessibilityOption"]>
@@ -22233,7 +22061,6 @@ export namespace Prisma {
     readonly description: FieldRef<"AccessibilityOption", 'String'>
     readonly category: FieldRef<"AccessibilityOption", 'String'>
     readonly icon: FieldRef<"AccessibilityOption", 'String'>
-    readonly isRequired: FieldRef<"AccessibilityOption", 'Boolean'>
     readonly createdAt: FieldRef<"AccessibilityOption", 'DateTime'>
     readonly updatedAt: FieldRef<"AccessibilityOption", 'DateTime'>
   }
@@ -26143,6 +25970,7 @@ export namespace Prisma {
   }
 
   export type HotelCardAvgAggregateOutputType = {
+    order: number | null
     starRating: number | null
     overallRating: number | null
     reviewCount: number | null
@@ -26153,6 +25981,7 @@ export namespace Prisma {
   }
 
   export type HotelCardSumAggregateOutputType = {
+    order: number | null
     starRating: number | null
     overallRating: number | null
     reviewCount: number | null
@@ -26166,6 +25995,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     idCity: string | null
+    order: number | null
     shortDescription: string | null
     starRating: number | null
     overallRating: number | null
@@ -26190,6 +26020,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     idCity: string | null
+    order: number | null
     shortDescription: string | null
     starRating: number | null
     overallRating: number | null
@@ -26214,6 +26045,7 @@ export namespace Prisma {
     id: number
     name: number
     idCity: number
+    order: number
     shortDescription: number
     starRating: number
     overallRating: number
@@ -26237,6 +26069,7 @@ export namespace Prisma {
 
 
   export type HotelCardAvgAggregateInputType = {
+    order?: true
     starRating?: true
     overallRating?: true
     reviewCount?: true
@@ -26247,6 +26080,7 @@ export namespace Prisma {
   }
 
   export type HotelCardSumAggregateInputType = {
+    order?: true
     starRating?: true
     overallRating?: true
     reviewCount?: true
@@ -26260,6 +26094,7 @@ export namespace Prisma {
     id?: true
     name?: true
     idCity?: true
+    order?: true
     shortDescription?: true
     starRating?: true
     overallRating?: true
@@ -26284,6 +26119,7 @@ export namespace Prisma {
     id?: true
     name?: true
     idCity?: true
+    order?: true
     shortDescription?: true
     starRating?: true
     overallRating?: true
@@ -26308,6 +26144,7 @@ export namespace Prisma {
     id?: true
     name?: true
     idCity?: true
+    order?: true
     shortDescription?: true
     starRating?: true
     overallRating?: true
@@ -26419,6 +26256,7 @@ export namespace Prisma {
     id: string
     name: string
     idCity: string
+    order: number
     shortDescription: string | null
     starRating: number
     overallRating: number | null
@@ -26462,6 +26300,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     idCity?: boolean
+    order?: boolean
     shortDescription?: boolean
     starRating?: boolean
     overallRating?: boolean
@@ -26498,6 +26337,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     idCity?: boolean
+    order?: boolean
     shortDescription?: boolean
     starRating?: boolean
     overallRating?: boolean
@@ -26526,6 +26366,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     idCity?: boolean
+    order?: boolean
     shortDescription?: boolean
     starRating?: boolean
     overallRating?: boolean
@@ -26554,6 +26395,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     idCity?: boolean
+    order?: boolean
     shortDescription?: boolean
     starRating?: boolean
     overallRating?: boolean
@@ -26574,7 +26416,7 @@ export namespace Prisma {
     detailsId?: boolean
   }
 
-  export type HotelCardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "idCity" | "shortDescription" | "starRating" | "overallRating" | "ratingAdjective" | "reviewCount" | "basePricePerNight" | "regularPrice" | "currency" | "isPartner" | "promoMessage" | "imageMessage" | "cancellationPolicy" | "accommodationTypeId" | "destinationId" | "hotelGroupId" | "latitude" | "longitude" | "detailsId", ExtArgs["result"]["hotelCard"]>
+  export type HotelCardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "idCity" | "order" | "shortDescription" | "starRating" | "overallRating" | "ratingAdjective" | "reviewCount" | "basePricePerNight" | "regularPrice" | "currency" | "isPartner" | "promoMessage" | "imageMessage" | "cancellationPolicy" | "accommodationTypeId" | "destinationId" | "hotelGroupId" | "latitude" | "longitude" | "detailsId", ExtArgs["result"]["hotelCard"]>
   export type HotelCardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parking?: boolean | HotelCard$parkingArgs<ExtArgs>
     images?: boolean | HotelCard$imagesArgs<ExtArgs>
@@ -26621,6 +26463,7 @@ export namespace Prisma {
       id: string
       name: string
       idCity: string
+      order: number
       shortDescription: string | null
       starRating: number
       overallRating: number | null
@@ -27076,6 +26919,7 @@ export namespace Prisma {
     readonly id: FieldRef<"HotelCard", 'String'>
     readonly name: FieldRef<"HotelCard", 'String'>
     readonly idCity: FieldRef<"HotelCard", 'String'>
+    readonly order: FieldRef<"HotelCard", 'Int'>
     readonly shortDescription: FieldRef<"HotelCard", 'String'>
     readonly starRating: FieldRef<"HotelCard", 'Int'>
     readonly overallRating: FieldRef<"HotelCard", 'Float'>
@@ -27756,8 +27600,18 @@ export namespace Prisma {
 
   export type AggregateHotelDetails = {
     _count: HotelDetailsCountAggregateOutputType | null
+    _avg: HotelDetailsAvgAggregateOutputType | null
+    _sum: HotelDetailsSumAggregateOutputType | null
     _min: HotelDetailsMinAggregateOutputType | null
     _max: HotelDetailsMaxAggregateOutputType | null
+  }
+
+  export type HotelDetailsAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type HotelDetailsSumAggregateOutputType = {
+    order: number | null
   }
 
   export type HotelDetailsMinAggregateOutputType = {
@@ -27765,6 +27619,7 @@ export namespace Prisma {
     idHotelCard: string | null
     description: string | null
     addressId: string | null
+    order: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27774,6 +27629,7 @@ export namespace Prisma {
     idHotelCard: string | null
     description: string | null
     addressId: string | null
+    order: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -27783,17 +27639,27 @@ export namespace Prisma {
     idHotelCard: number
     description: number
     addressId: number
+    order: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type HotelDetailsAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type HotelDetailsSumAggregateInputType = {
+    order?: true
+  }
+
   export type HotelDetailsMinAggregateInputType = {
     id?: true
     idHotelCard?: true
     description?: true
     addressId?: true
+    order?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27803,6 +27669,7 @@ export namespace Prisma {
     idHotelCard?: true
     description?: true
     addressId?: true
+    order?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -27812,6 +27679,7 @@ export namespace Prisma {
     idHotelCard?: true
     description?: true
     addressId?: true
+    order?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -27855,6 +27723,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: HotelDetailsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: HotelDetailsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: HotelDetailsMinAggregateInputType
@@ -27885,6 +27765,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: HotelDetailsCountAggregateInputType | true
+    _avg?: HotelDetailsAvgAggregateInputType
+    _sum?: HotelDetailsSumAggregateInputType
     _min?: HotelDetailsMinAggregateInputType
     _max?: HotelDetailsMaxAggregateInputType
   }
@@ -27894,9 +27776,12 @@ export namespace Prisma {
     idHotelCard: string
     description: string | null
     addressId: string
+    order: number | null
     createdAt: Date
     updatedAt: Date
     _count: HotelDetailsCountAggregateOutputType | null
+    _avg: HotelDetailsAvgAggregateOutputType | null
+    _sum: HotelDetailsSumAggregateOutputType | null
     _min: HotelDetailsMinAggregateOutputType | null
     _max: HotelDetailsMaxAggregateOutputType | null
   }
@@ -27920,6 +27805,7 @@ export namespace Prisma {
     idHotelCard?: boolean
     description?: boolean
     addressId?: boolean
+    order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     address?: boolean | AddressDefaultArgs<ExtArgs>
@@ -27935,6 +27821,7 @@ export namespace Prisma {
     idHotelCard?: boolean
     description?: boolean
     addressId?: boolean
+    order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     address?: boolean | AddressDefaultArgs<ExtArgs>
@@ -27945,6 +27832,7 @@ export namespace Prisma {
     idHotelCard?: boolean
     description?: boolean
     addressId?: boolean
+    order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     address?: boolean | AddressDefaultArgs<ExtArgs>
@@ -27955,11 +27843,12 @@ export namespace Prisma {
     idHotelCard?: boolean
     description?: boolean
     addressId?: boolean
+    order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type HotelDetailsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idHotelCard" | "description" | "addressId" | "createdAt" | "updatedAt", ExtArgs["result"]["hotelDetails"]>
+  export type HotelDetailsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idHotelCard" | "description" | "addressId" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["hotelDetails"]>
   export type HotelDetailsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     address?: boolean | AddressDefaultArgs<ExtArgs>
     RoomAmenity?: boolean | HotelDetails$RoomAmenityArgs<ExtArgs>
@@ -27989,6 +27878,7 @@ export namespace Prisma {
       idHotelCard: string
       description: string | null
       addressId: string
+      order: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["hotelDetails"]>
@@ -28423,6 +28313,7 @@ export namespace Prisma {
     readonly idHotelCard: FieldRef<"HotelDetails", 'String'>
     readonly description: FieldRef<"HotelDetails", 'String'>
     readonly addressId: FieldRef<"HotelDetails", 'String'>
+    readonly order: FieldRef<"HotelDetails", 'Int'>
     readonly createdAt: FieldRef<"HotelDetails", 'DateTime'>
     readonly updatedAt: FieldRef<"HotelDetails", 'DateTime'>
   }
@@ -35698,16 +35589,9 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     order: 'order',
-    code: 'code',
     description: 'description',
     website: 'website',
     logoUrl: 'logoUrl',
-    foundedYear: 'foundedYear',
-    headquarters: 'headquarters',
-    totalProperties: 'totalProperties',
-    totalRooms: 'totalRooms',
-    marketCap: 'marketCap',
-    annualRevenue: 'annualRevenue',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -35768,7 +35652,6 @@ export namespace Prisma {
     description: 'description',
     category: 'category',
     icon: 'icon',
-    isRequired: 'isRequired',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -35822,6 +35705,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     idCity: 'idCity',
+    order: 'order',
     shortDescription: 'shortDescription',
     starRating: 'starRating',
     overallRating: 'overallRating',
@@ -35850,6 +35734,7 @@ export namespace Prisma {
     idHotelCard: 'idHotelCard',
     description: 'description',
     addressId: 'addressId',
+    order: 'order',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -36843,16 +36728,9 @@ export namespace Prisma {
     id?: StringFilter<"HotelGroup"> | string
     name?: StringFilter<"HotelGroup"> | string
     order?: IntNullableFilter<"HotelGroup"> | number | null
-    code?: StringFilter<"HotelGroup"> | string
     description?: StringNullableFilter<"HotelGroup"> | string | null
     website?: StringNullableFilter<"HotelGroup"> | string | null
     logoUrl?: StringNullableFilter<"HotelGroup"> | string | null
-    foundedYear?: IntNullableFilter<"HotelGroup"> | number | null
-    headquarters?: StringNullableFilter<"HotelGroup"> | string | null
-    totalProperties?: IntFilter<"HotelGroup"> | number
-    totalRooms?: IntFilter<"HotelGroup"> | number
-    marketCap?: FloatNullableFilter<"HotelGroup"> | number | null
-    annualRevenue?: FloatNullableFilter<"HotelGroup"> | number | null
     createdAt?: DateTimeFilter<"HotelGroup"> | Date | string
     updatedAt?: DateTimeFilter<"HotelGroup"> | Date | string
     HotelCard?: HotelCardListRelationFilter
@@ -36862,16 +36740,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     order?: SortOrderInput | SortOrder
-    code?: SortOrder
     description?: SortOrderInput | SortOrder
     website?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
-    foundedYear?: SortOrderInput | SortOrder
-    headquarters?: SortOrderInput | SortOrder
-    totalProperties?: SortOrder
-    totalRooms?: SortOrder
-    marketCap?: SortOrderInput | SortOrder
-    annualRevenue?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     HotelCard?: HotelCardOrderByRelationAggregateInput
@@ -36879,7 +36750,6 @@ export namespace Prisma {
 
   export type HotelGroupWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    code?: string
     AND?: HotelGroupWhereInput | HotelGroupWhereInput[]
     OR?: HotelGroupWhereInput[]
     NOT?: HotelGroupWhereInput | HotelGroupWhereInput[]
@@ -36888,31 +36758,18 @@ export namespace Prisma {
     description?: StringNullableFilter<"HotelGroup"> | string | null
     website?: StringNullableFilter<"HotelGroup"> | string | null
     logoUrl?: StringNullableFilter<"HotelGroup"> | string | null
-    foundedYear?: IntNullableFilter<"HotelGroup"> | number | null
-    headquarters?: StringNullableFilter<"HotelGroup"> | string | null
-    totalProperties?: IntFilter<"HotelGroup"> | number
-    totalRooms?: IntFilter<"HotelGroup"> | number
-    marketCap?: FloatNullableFilter<"HotelGroup"> | number | null
-    annualRevenue?: FloatNullableFilter<"HotelGroup"> | number | null
     createdAt?: DateTimeFilter<"HotelGroup"> | Date | string
     updatedAt?: DateTimeFilter<"HotelGroup"> | Date | string
     HotelCard?: HotelCardListRelationFilter
-  }, "id" | "code">
+  }, "id">
 
   export type HotelGroupOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     order?: SortOrderInput | SortOrder
-    code?: SortOrder
     description?: SortOrderInput | SortOrder
     website?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
-    foundedYear?: SortOrderInput | SortOrder
-    headquarters?: SortOrderInput | SortOrder
-    totalProperties?: SortOrder
-    totalRooms?: SortOrder
-    marketCap?: SortOrderInput | SortOrder
-    annualRevenue?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: HotelGroupCountOrderByAggregateInput
@@ -36929,16 +36786,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"HotelGroup"> | string
     name?: StringWithAggregatesFilter<"HotelGroup"> | string
     order?: IntNullableWithAggregatesFilter<"HotelGroup"> | number | null
-    code?: StringWithAggregatesFilter<"HotelGroup"> | string
     description?: StringNullableWithAggregatesFilter<"HotelGroup"> | string | null
     website?: StringNullableWithAggregatesFilter<"HotelGroup"> | string | null
     logoUrl?: StringNullableWithAggregatesFilter<"HotelGroup"> | string | null
-    foundedYear?: IntNullableWithAggregatesFilter<"HotelGroup"> | number | null
-    headquarters?: StringNullableWithAggregatesFilter<"HotelGroup"> | string | null
-    totalProperties?: IntWithAggregatesFilter<"HotelGroup"> | number
-    totalRooms?: IntWithAggregatesFilter<"HotelGroup"> | number
-    marketCap?: FloatNullableWithAggregatesFilter<"HotelGroup"> | number | null
-    annualRevenue?: FloatNullableWithAggregatesFilter<"HotelGroup"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"HotelGroup"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"HotelGroup"> | Date | string
   }
@@ -37191,7 +37041,6 @@ export namespace Prisma {
     description?: StringNullableFilter<"AccessibilityOption"> | string | null
     category?: StringFilter<"AccessibilityOption"> | string
     icon?: StringNullableFilter<"AccessibilityOption"> | string | null
-    isRequired?: BoolFilter<"AccessibilityOption"> | boolean
     createdAt?: DateTimeFilter<"AccessibilityOption"> | Date | string
     updatedAt?: DateTimeFilter<"AccessibilityOption"> | Date | string
     HotelCardToAccessibilityOption?: HotelCardToAccessibilityOptionListRelationFilter
@@ -37205,7 +37054,6 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     category?: SortOrder
     icon?: SortOrderInput | SortOrder
-    isRequired?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     HotelCardToAccessibilityOption?: HotelCardToAccessibilityOptionOrderByRelationAggregateInput
@@ -37222,7 +37070,6 @@ export namespace Prisma {
     description?: StringNullableFilter<"AccessibilityOption"> | string | null
     category?: StringFilter<"AccessibilityOption"> | string
     icon?: StringNullableFilter<"AccessibilityOption"> | string | null
-    isRequired?: BoolFilter<"AccessibilityOption"> | boolean
     createdAt?: DateTimeFilter<"AccessibilityOption"> | Date | string
     updatedAt?: DateTimeFilter<"AccessibilityOption"> | Date | string
     HotelCardToAccessibilityOption?: HotelCardToAccessibilityOptionListRelationFilter
@@ -37236,7 +37083,6 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     category?: SortOrder
     icon?: SortOrderInput | SortOrder
-    isRequired?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AccessibilityOptionCountOrderByAggregateInput
@@ -37257,7 +37103,6 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"AccessibilityOption"> | string | null
     category?: StringWithAggregatesFilter<"AccessibilityOption"> | string
     icon?: StringNullableWithAggregatesFilter<"AccessibilityOption"> | string | null
-    isRequired?: BoolWithAggregatesFilter<"AccessibilityOption"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"AccessibilityOption"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AccessibilityOption"> | Date | string
   }
@@ -37492,6 +37337,7 @@ export namespace Prisma {
     id?: StringFilter<"HotelCard"> | string
     name?: StringFilter<"HotelCard"> | string
     idCity?: StringFilter<"HotelCard"> | string
+    order?: IntFilter<"HotelCard"> | number
     shortDescription?: StringNullableFilter<"HotelCard"> | string | null
     starRating?: IntFilter<"HotelCard"> | number
     overallRating?: FloatNullableFilter<"HotelCard"> | number | null
@@ -37527,6 +37373,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     idCity?: SortOrder
+    order?: SortOrder
     shortDescription?: SortOrderInput | SortOrder
     starRating?: SortOrder
     overallRating?: SortOrderInput | SortOrder
@@ -37565,6 +37412,7 @@ export namespace Prisma {
     NOT?: HotelCardWhereInput | HotelCardWhereInput[]
     name?: StringFilter<"HotelCard"> | string
     idCity?: StringFilter<"HotelCard"> | string
+    order?: IntFilter<"HotelCard"> | number
     shortDescription?: StringNullableFilter<"HotelCard"> | string | null
     starRating?: IntFilter<"HotelCard"> | number
     overallRating?: FloatNullableFilter<"HotelCard"> | number | null
@@ -37600,6 +37448,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     idCity?: SortOrder
+    order?: SortOrder
     shortDescription?: SortOrderInput | SortOrder
     starRating?: SortOrder
     overallRating?: SortOrderInput | SortOrder
@@ -37632,6 +37481,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"HotelCard"> | string
     name?: StringWithAggregatesFilter<"HotelCard"> | string
     idCity?: StringWithAggregatesFilter<"HotelCard"> | string
+    order?: IntWithAggregatesFilter<"HotelCard"> | number
     shortDescription?: StringNullableWithAggregatesFilter<"HotelCard"> | string | null
     starRating?: IntWithAggregatesFilter<"HotelCard"> | number
     overallRating?: FloatNullableWithAggregatesFilter<"HotelCard"> | number | null
@@ -37660,6 +37510,7 @@ export namespace Prisma {
     idHotelCard?: StringFilter<"HotelDetails"> | string
     description?: StringNullableFilter<"HotelDetails"> | string | null
     addressId?: StringFilter<"HotelDetails"> | string
+    order?: IntNullableFilter<"HotelDetails"> | number | null
     createdAt?: DateTimeFilter<"HotelDetails"> | Date | string
     updatedAt?: DateTimeFilter<"HotelDetails"> | Date | string
     address?: XOR<AddressScalarRelationFilter, AddressWhereInput>
@@ -37674,6 +37525,7 @@ export namespace Prisma {
     idHotelCard?: SortOrder
     description?: SortOrderInput | SortOrder
     addressId?: SortOrder
+    order?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     address?: AddressOrderByWithRelationInput
@@ -37691,6 +37543,7 @@ export namespace Prisma {
     idHotelCard?: StringFilter<"HotelDetails"> | string
     description?: StringNullableFilter<"HotelDetails"> | string | null
     addressId?: StringFilter<"HotelDetails"> | string
+    order?: IntNullableFilter<"HotelDetails"> | number | null
     createdAt?: DateTimeFilter<"HotelDetails"> | Date | string
     updatedAt?: DateTimeFilter<"HotelDetails"> | Date | string
     address?: XOR<AddressScalarRelationFilter, AddressWhereInput>
@@ -37705,11 +37558,14 @@ export namespace Prisma {
     idHotelCard?: SortOrder
     description?: SortOrderInput | SortOrder
     addressId?: SortOrder
+    order?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: HotelDetailsCountOrderByAggregateInput
+    _avg?: HotelDetailsAvgOrderByAggregateInput
     _max?: HotelDetailsMaxOrderByAggregateInput
     _min?: HotelDetailsMinOrderByAggregateInput
+    _sum?: HotelDetailsSumOrderByAggregateInput
   }
 
   export type HotelDetailsScalarWhereWithAggregatesInput = {
@@ -37720,6 +37576,7 @@ export namespace Prisma {
     idHotelCard?: StringWithAggregatesFilter<"HotelDetails"> | string
     description?: StringNullableWithAggregatesFilter<"HotelDetails"> | string | null
     addressId?: StringWithAggregatesFilter<"HotelDetails"> | string
+    order?: IntNullableWithAggregatesFilter<"HotelDetails"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"HotelDetails"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"HotelDetails"> | Date | string
   }
@@ -39051,16 +38908,9 @@ export namespace Prisma {
     id?: string
     name: string
     order?: number | null
-    code: string
     description?: string | null
     website?: string | null
     logoUrl?: string | null
-    foundedYear?: number | null
-    headquarters?: string | null
-    totalProperties?: number
-    totalRooms?: number
-    marketCap?: number | null
-    annualRevenue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     HotelCard?: HotelCardCreateNestedManyWithoutHotelGroupInput
@@ -39070,16 +38920,9 @@ export namespace Prisma {
     id?: string
     name: string
     order?: number | null
-    code: string
     description?: string | null
     website?: string | null
     logoUrl?: string | null
-    foundedYear?: number | null
-    headquarters?: string | null
-    totalProperties?: number
-    totalRooms?: number
-    marketCap?: number | null
-    annualRevenue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     HotelCard?: HotelCardUncheckedCreateNestedManyWithoutHotelGroupInput
@@ -39089,16 +38932,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     order?: NullableIntFieldUpdateOperationsInput | number | null
-    code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    foundedYear?: NullableIntFieldUpdateOperationsInput | number | null
-    headquarters?: NullableStringFieldUpdateOperationsInput | string | null
-    totalProperties?: IntFieldUpdateOperationsInput | number
-    totalRooms?: IntFieldUpdateOperationsInput | number
-    marketCap?: NullableFloatFieldUpdateOperationsInput | number | null
-    annualRevenue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     HotelCard?: HotelCardUpdateManyWithoutHotelGroupNestedInput
@@ -39108,16 +38944,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     order?: NullableIntFieldUpdateOperationsInput | number | null
-    code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    foundedYear?: NullableIntFieldUpdateOperationsInput | number | null
-    headquarters?: NullableStringFieldUpdateOperationsInput | string | null
-    totalProperties?: IntFieldUpdateOperationsInput | number
-    totalRooms?: IntFieldUpdateOperationsInput | number
-    marketCap?: NullableFloatFieldUpdateOperationsInput | number | null
-    annualRevenue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     HotelCard?: HotelCardUncheckedUpdateManyWithoutHotelGroupNestedInput
@@ -39127,16 +38956,9 @@ export namespace Prisma {
     id?: string
     name: string
     order?: number | null
-    code: string
     description?: string | null
     website?: string | null
     logoUrl?: string | null
-    foundedYear?: number | null
-    headquarters?: string | null
-    totalProperties?: number
-    totalRooms?: number
-    marketCap?: number | null
-    annualRevenue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -39145,16 +38967,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     order?: NullableIntFieldUpdateOperationsInput | number | null
-    code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    foundedYear?: NullableIntFieldUpdateOperationsInput | number | null
-    headquarters?: NullableStringFieldUpdateOperationsInput | string | null
-    totalProperties?: IntFieldUpdateOperationsInput | number
-    totalRooms?: IntFieldUpdateOperationsInput | number
-    marketCap?: NullableFloatFieldUpdateOperationsInput | number | null
-    annualRevenue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39163,16 +38978,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     order?: NullableIntFieldUpdateOperationsInput | number | null
-    code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    foundedYear?: NullableIntFieldUpdateOperationsInput | number | null
-    headquarters?: NullableStringFieldUpdateOperationsInput | string | null
-    totalProperties?: IntFieldUpdateOperationsInput | number
-    totalRooms?: IntFieldUpdateOperationsInput | number
-    marketCap?: NullableFloatFieldUpdateOperationsInput | number | null
-    annualRevenue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39457,7 +39265,6 @@ export namespace Prisma {
     description?: string | null
     category: string
     icon?: string | null
-    isRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     HotelCardToAccessibilityOption?: HotelCardToAccessibilityOptionCreateNestedManyWithoutAccessibilityOptionInput
@@ -39471,7 +39278,6 @@ export namespace Prisma {
     description?: string | null
     category: string
     icon?: string | null
-    isRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     HotelCardToAccessibilityOption?: HotelCardToAccessibilityOptionUncheckedCreateNestedManyWithoutAccessibilityOptionInput
@@ -39485,7 +39291,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     HotelCardToAccessibilityOption?: HotelCardToAccessibilityOptionUpdateManyWithoutAccessibilityOptionNestedInput
@@ -39499,7 +39304,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     HotelCardToAccessibilityOption?: HotelCardToAccessibilityOptionUncheckedUpdateManyWithoutAccessibilityOptionNestedInput
@@ -39513,7 +39317,6 @@ export namespace Prisma {
     description?: string | null
     category: string
     icon?: string | null
-    isRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -39526,7 +39329,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39539,7 +39341,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39793,6 +39594,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -39824,6 +39626,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -39855,6 +39658,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -39886,6 +39690,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -39917,6 +39722,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -39941,6 +39747,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -39961,6 +39768,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -39985,6 +39793,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     address: AddressCreateNestedOneWithoutHotelDetailsInput
@@ -39999,6 +39808,7 @@ export namespace Prisma {
     idHotelCard: string
     description?: string | null
     addressId: string
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RoomAmenity?: RoomAmenityUncheckedCreateNestedManyWithoutHotelDetailsInput
@@ -40011,6 +39821,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneRequiredWithoutHotelDetailsNestedInput
@@ -40025,6 +39836,7 @@ export namespace Prisma {
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     addressId?: StringFieldUpdateOperationsInput | string
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RoomAmenity?: RoomAmenityUncheckedUpdateManyWithoutHotelDetailsNestedInput
@@ -40038,6 +39850,7 @@ export namespace Prisma {
     idHotelCard: string
     description?: string | null
     addressId: string
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40046,6 +39859,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40055,6 +39869,7 @@ export namespace Prisma {
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     addressId?: StringFieldUpdateOperationsInput | string
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41175,43 +40990,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     order?: SortOrder
-    code?: SortOrder
     description?: SortOrder
     website?: SortOrder
     logoUrl?: SortOrder
-    foundedYear?: SortOrder
-    headquarters?: SortOrder
-    totalProperties?: SortOrder
-    totalRooms?: SortOrder
-    marketCap?: SortOrder
-    annualRevenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type HotelGroupAvgOrderByAggregateInput = {
     order?: SortOrder
-    foundedYear?: SortOrder
-    totalProperties?: SortOrder
-    totalRooms?: SortOrder
-    marketCap?: SortOrder
-    annualRevenue?: SortOrder
   }
 
   export type HotelGroupMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     order?: SortOrder
-    code?: SortOrder
     description?: SortOrder
     website?: SortOrder
     logoUrl?: SortOrder
-    foundedYear?: SortOrder
-    headquarters?: SortOrder
-    totalProperties?: SortOrder
-    totalRooms?: SortOrder
-    marketCap?: SortOrder
-    annualRevenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41220,27 +41016,15 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     order?: SortOrder
-    code?: SortOrder
     description?: SortOrder
     website?: SortOrder
     logoUrl?: SortOrder
-    foundedYear?: SortOrder
-    headquarters?: SortOrder
-    totalProperties?: SortOrder
-    totalRooms?: SortOrder
-    marketCap?: SortOrder
-    annualRevenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type HotelGroupSumOrderByAggregateInput = {
     order?: SortOrder
-    foundedYear?: SortOrder
-    totalProperties?: SortOrder
-    totalRooms?: SortOrder
-    marketCap?: SortOrder
-    annualRevenue?: SortOrder
   }
 
   export type HotelCardToHotelHighlightListRelationFilter = {
@@ -41435,7 +41219,6 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     icon?: SortOrder
-    isRequired?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41452,7 +41235,6 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     icon?: SortOrder
-    isRequired?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41465,7 +41247,6 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     icon?: SortOrder
-    isRequired?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41666,6 +41447,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     idCity?: SortOrder
+    order?: SortOrder
     shortDescription?: SortOrder
     starRating?: SortOrder
     overallRating?: SortOrder
@@ -41687,6 +41469,7 @@ export namespace Prisma {
   }
 
   export type HotelCardAvgOrderByAggregateInput = {
+    order?: SortOrder
     starRating?: SortOrder
     overallRating?: SortOrder
     reviewCount?: SortOrder
@@ -41700,6 +41483,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     idCity?: SortOrder
+    order?: SortOrder
     shortDescription?: SortOrder
     starRating?: SortOrder
     overallRating?: SortOrder
@@ -41724,6 +41508,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     idCity?: SortOrder
+    order?: SortOrder
     shortDescription?: SortOrder
     starRating?: SortOrder
     overallRating?: SortOrder
@@ -41745,6 +41530,7 @@ export namespace Prisma {
   }
 
   export type HotelCardSumOrderByAggregateInput = {
+    order?: SortOrder
     starRating?: SortOrder
     overallRating?: SortOrder
     reviewCount?: SortOrder
@@ -41800,8 +41586,13 @@ export namespace Prisma {
     idHotelCard?: SortOrder
     description?: SortOrder
     addressId?: SortOrder
+    order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type HotelDetailsAvgOrderByAggregateInput = {
+    order?: SortOrder
   }
 
   export type HotelDetailsMaxOrderByAggregateInput = {
@@ -41809,6 +41600,7 @@ export namespace Prisma {
     idHotelCard?: SortOrder
     description?: SortOrder
     addressId?: SortOrder
+    order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41818,8 +41610,13 @@ export namespace Prisma {
     idHotelCard?: SortOrder
     description?: SortOrder
     addressId?: SortOrder
+    order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type HotelDetailsSumOrderByAggregateInput = {
+    order?: SortOrder
   }
 
   export type HotelCardScalarRelationFilter = {
@@ -45168,6 +44965,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45198,6 +44996,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45256,6 +45055,7 @@ export namespace Prisma {
     id?: StringFilter<"HotelCard"> | string
     name?: StringFilter<"HotelCard"> | string
     idCity?: StringFilter<"HotelCard"> | string
+    order?: IntFilter<"HotelCard"> | number
     shortDescription?: StringNullableFilter<"HotelCard"> | string | null
     starRating?: IntFilter<"HotelCard"> | number
     overallRating?: FloatNullableFilter<"HotelCard"> | number | null
@@ -45280,6 +45080,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45310,6 +45111,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45451,6 +45253,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     address: AddressCreateNestedOneWithoutHotelDetailsInput
@@ -45464,6 +45267,7 @@ export namespace Prisma {
     idHotelCard: string
     description?: string | null
     addressId: string
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RoomAmenity?: RoomAmenityUncheckedCreateNestedManyWithoutHotelDetailsInput
@@ -45514,6 +45318,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneRequiredWithoutHotelDetailsNestedInput
@@ -45527,6 +45332,7 @@ export namespace Prisma {
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     addressId?: StringFieldUpdateOperationsInput | string
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RoomAmenity?: RoomAmenityUncheckedUpdateManyWithoutHotelDetailsNestedInput
@@ -45565,6 +45371,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45595,6 +45402,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45700,6 +45508,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45730,6 +45539,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -45831,6 +45641,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     address: AddressCreateNestedOneWithoutHotelDetailsInput
@@ -45844,6 +45655,7 @@ export namespace Prisma {
     idHotelCard: string
     description?: string | null
     addressId: string
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Label?: LabelUncheckedCreateNestedManyWithoutHotelDetailsInput
@@ -45903,6 +45715,7 @@ export namespace Prisma {
     idHotelCard?: StringFilter<"HotelDetails"> | string
     description?: StringNullableFilter<"HotelDetails"> | string | null
     addressId?: StringFilter<"HotelDetails"> | string
+    order?: IntNullableFilter<"HotelDetails"> | number | null
     createdAt?: DateTimeFilter<"HotelDetails"> | Date | string
     updatedAt?: DateTimeFilter<"HotelDetails"> | Date | string
   }
@@ -45988,6 +45801,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -46018,6 +45832,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -46123,6 +45938,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RoomAmenity?: RoomAmenityCreateNestedManyWithoutHotelDetailsInput
@@ -46135,6 +45951,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RoomAmenity?: RoomAmenityUncheckedCreateNestedManyWithoutHotelDetailsInput
@@ -46296,6 +46113,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -46326,6 +46144,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -46458,6 +46277,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     address: AddressCreateNestedOneWithoutHotelDetailsInput
@@ -46471,6 +46291,7 @@ export namespace Prisma {
     idHotelCard: string
     description?: string | null
     addressId: string
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RoomAmenity?: RoomAmenityUncheckedCreateNestedManyWithoutHotelDetailsInput
@@ -46553,16 +46374,9 @@ export namespace Prisma {
     id?: string
     name: string
     order?: number | null
-    code: string
     description?: string | null
     website?: string | null
     logoUrl?: string | null
-    foundedYear?: number | null
-    headquarters?: string | null
-    totalProperties?: number
-    totalRooms?: number
-    marketCap?: number | null
-    annualRevenue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -46571,16 +46385,9 @@ export namespace Prisma {
     id?: string
     name: string
     order?: number | null
-    code: string
     description?: string | null
     website?: string | null
     logoUrl?: string | null
-    foundedYear?: number | null
-    headquarters?: string | null
-    totalProperties?: number
-    totalRooms?: number
-    marketCap?: number | null
-    annualRevenue?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -46786,6 +46593,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneRequiredWithoutHotelDetailsNestedInput
@@ -46799,6 +46607,7 @@ export namespace Prisma {
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     addressId?: StringFieldUpdateOperationsInput | string
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RoomAmenity?: RoomAmenityUncheckedUpdateManyWithoutHotelDetailsNestedInput
@@ -46899,16 +46708,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     order?: NullableIntFieldUpdateOperationsInput | number | null
-    code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    foundedYear?: NullableIntFieldUpdateOperationsInput | number | null
-    headquarters?: NullableStringFieldUpdateOperationsInput | string | null
-    totalProperties?: IntFieldUpdateOperationsInput | number
-    totalRooms?: IntFieldUpdateOperationsInput | number
-    marketCap?: NullableFloatFieldUpdateOperationsInput | number | null
-    annualRevenue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -46917,16 +46719,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     order?: NullableIntFieldUpdateOperationsInput | number | null
-    code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    foundedYear?: NullableIntFieldUpdateOperationsInput | number | null
-    headquarters?: NullableStringFieldUpdateOperationsInput | string | null
-    totalProperties?: IntFieldUpdateOperationsInput | number
-    totalRooms?: IntFieldUpdateOperationsInput | number
-    marketCap?: NullableFloatFieldUpdateOperationsInput | number | null
-    annualRevenue?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -47098,6 +46893,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47128,6 +46924,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47323,6 +47120,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47353,6 +47151,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47432,6 +47231,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47462,6 +47262,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47531,6 +47332,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47561,6 +47363,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47642,6 +47445,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47672,6 +47476,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47743,6 +47548,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47773,6 +47579,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47812,7 +47619,6 @@ export namespace Prisma {
     description?: string | null
     category: string
     icon?: string | null
-    isRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -47825,7 +47631,6 @@ export namespace Prisma {
     description?: string | null
     category: string
     icon?: string | null
-    isRequired?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -47850,6 +47655,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47880,6 +47686,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -47925,7 +47732,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -47938,7 +47744,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
-    isRequired?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -47947,6 +47752,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -47977,6 +47783,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -48052,6 +47859,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -48082,6 +47890,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -48147,6 +47956,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     address: AddressCreateNestedOneWithoutHotelDetailsInput
@@ -48160,6 +47970,7 @@ export namespace Prisma {
     idHotelCard: string
     description?: string | null
     addressId: string
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     RoomAmenity?: RoomAmenityUncheckedCreateNestedManyWithoutHotelDetailsInput
@@ -48216,6 +48027,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneRequiredWithoutHotelDetailsNestedInput
@@ -48229,6 +48041,7 @@ export namespace Prisma {
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     addressId?: StringFieldUpdateOperationsInput | string
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RoomAmenity?: RoomAmenityUncheckedUpdateManyWithoutHotelDetailsNestedInput
@@ -48862,6 +48675,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -48885,6 +48699,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -48915,6 +48730,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -48945,6 +48761,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -48968,6 +48785,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -48998,6 +48816,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49028,6 +48847,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49058,6 +48878,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49165,6 +48986,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -49188,6 +49010,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49218,6 +49041,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49248,6 +49072,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49306,6 +49131,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49336,6 +49162,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49366,6 +49193,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49418,6 +49246,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneRequiredWithoutHotelDetailsNestedInput
@@ -49431,6 +49260,7 @@ export namespace Prisma {
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     addressId?: StringFieldUpdateOperationsInput | string
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Label?: LabelUncheckedUpdateManyWithoutHotelDetailsNestedInput
@@ -49443,6 +49273,7 @@ export namespace Prisma {
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     addressId?: StringFieldUpdateOperationsInput | string
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -49500,6 +49331,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49530,6 +49362,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49560,6 +49393,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49584,6 +49418,7 @@ export namespace Prisma {
     id?: string
     idHotelCard: string
     description?: string | null
+    order?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -49592,6 +49427,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RoomAmenity?: RoomAmenityUpdateManyWithoutHotelDetailsNestedInput
@@ -49604,6 +49440,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     RoomAmenity?: RoomAmenityUncheckedUpdateManyWithoutHotelDetailsNestedInput
@@ -49616,6 +49453,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     idHotelCard?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -49658,6 +49496,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49688,6 +49527,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49718,6 +49558,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -49966,6 +49807,7 @@ export namespace Prisma {
     id?: string
     name: string
     idCity: string
+    order?: number
     shortDescription?: string | null
     starRating: number
     overallRating?: number | null
@@ -50075,6 +49917,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50105,6 +49948,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50135,6 +49979,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     idCity?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
     shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
     starRating?: IntFieldUpdateOperationsInput | number
     overallRating?: NullableFloatFieldUpdateOperationsInput | number | null

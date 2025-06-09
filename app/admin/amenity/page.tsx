@@ -1,186 +1,20 @@
-// /app/admin/amenety/page.tsx
-
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import TableManager from "@/components/componentsAdmim/tableManager/TableManager";
-
-// Définition des champs pour chaque table
-const tables = [
-  {
-    name: "HotelAmenity",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "category", 
-      "icon",
-      "description",
-      "createdAt",
-      "updatedAt",
-      "HotelCard",
-      "HotelCardToHotelAmenity",
-    ],
-  },
-  {
-    name: "RoomAmenity",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "category",
-      "icon",
-      "description",
-      "createdAt",
-      "updatedAt",
-      "HotelDetails",
-      "HotelDetailsToRoomAmenity",
-    ],
-  },
-  {
-    name: "AccommodationType",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "code",
-      "description",
-      "category",
-      "createdAt",
-      "updatedAt",
-      "HotelCard",
-    ],
-  },
-  {
-    name: "AccessibilityOption",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "code",
-      "description",
-      "category",
-      "icon",
-      "isRequired",
-      "createdAt",
-      "updatedAt",
-      "HotelCardToAccessibilityOption",
-    ],
-  },
-  {
-    name: "HotelParking",
-    fields: [
-      "id",
-      "isAvailable",
-      "spaces",
-      "order",
-      "notes",
-      "createdAt",
-      "updatedAt",
-      "HotelCard",
-    ],
-  },
-];
-
-type TableData = {
-  [key: string]: any[];
-};
+import TableManagerHotelAmenity from "@/components/componentsAdmim/tableManager/TableManagerHotelAmenity";
+import TableManagerRoomAmenity from "@/components/componentsAdmim/tableManager/TableManagerRoomAmenity";
+import TableManagerAccommodationType from "@/components/componentsAdmim/tableManager/TableManagerAccommodationType";
+import TableManagerAccessibilityOption from "@/components/componentsAdmim/tableManager/TableManagerAccessibilityOption";
+import TableManagerHotelParking from "@/components/componentsAdmim/tableManager/TableManagerHotelParking";
 
 export default function AmenetyAdminPage() {
-  const [editingTable, setEditingTable] = useState<null | (typeof tables)[0]>(
-    null
-  );
-  const [data, setData] = useState<TableData>({});
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (editingTable) {
-      setLoading(true);
-      fetch(`/api/admin/${editingTable.name}`)
-        .then((res) => res.json())
-        .then((items) =>
-          setData((prev) => ({
-            ...prev,
-            [editingTable.name]: items,
-          }))
-        )
-        .finally(() => setLoading(false));
-    }
-  }, [editingTable]);
-
-  const handleAdd = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    if (res.ok) {
-      const newItem = await res.json();
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: [...(prev[editingTable.name] || []), newItem],
-      }));
-    }
-  };
-
-  const handleEdit = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}/${item.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    if (res.ok) {
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: prev[editingTable.name].map((i: any) =>
-          i.id === item.id ? item : i
-        ),
-      }));
-    }
-  };
-
-  const handleDelete = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}/${item.id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: prev[editingTable.name].filter(
-          (i: any) => i.id !== item.id
-        ),
-      }));
-    }
-  };
-
-  const handleMoveUp = (item: any, idx: number) => {
-    if (!editingTable) return;
-    if (idx === 0) return;
-    setData((prev) => {
-      const newItems = [...prev[editingTable.name]];
-      [newItems[idx - 1], newItems[idx]] = [newItems[idx], newItems[idx - 1]];
-      return { ...prev, [editingTable.name]: newItems };
-    });
-  };
-
-  const handleMoveDown = (item: any, idx: number) => {
-    if (!editingTable) return;
-    setData((prev) => {
-      const newItems = [...prev[editingTable.name]];
-      if (idx === newItems.length - 1) return prev;
-      [newItems[idx], newItems[idx + 1]] = [newItems[idx + 1], newItems[idx]];
-      return { ...prev, [editingTable.name]: newItems };
-    });
-  };
+  const [editingTable, setEditingTable] = useState<null | string>(null);
 
   return (
     <div className="w-screen min-h-screen p-0 m-0">
@@ -189,15 +23,15 @@ export default function AmenetyAdminPage() {
           Gestion des services et équipements
         </h1>
         {!editingTable ? (
-          <Accordion type="single" collapsible className="w-full">
-            {tables.map((table) => (
-              <AccordionItem key={table.name} value={table.name}>
+          <div className="space-y-6">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="HotelAmenity">
                 <div className="flex items-center justify-between pr-4">
                   <AccordionTrigger>
-                    <span className="font-semibold">{table.name}</span>
+                    <span className="font-semibold">HotelAmenity</span>
                   </AccordionTrigger>
                   <button
-                    onClick={() => setEditingTable(table)}
+                    onClick={() => setEditingTable("HotelAmenity")}
                     className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
                   >
                     Edit
@@ -205,14 +39,135 @@ export default function AmenetyAdminPage() {
                 </div>
                 <AccordionContent>
                   <ul className="list-disc pl-6">
-                    {table.fields.map((field) => (
-                      <li key={field}>{field}</li>
-                    ))}
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>category</li>
+                    <li>icon</li>
+                    <li>description</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>HotelCard</li>
+                    <li>HotelCardToHotelAmenity</li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-            ))}
-          </Accordion>
+            </Accordion>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="RoomAmenity">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">RoomAmenity</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("RoomAmenity")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>category</li>
+                    <li>icon</li>
+                    <li>description</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>HotelDetails</li>
+                    <li>HotelDetailsToRoomAmenity</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="AccommodationType">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">AccommodationType</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("AccommodationType")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>code</li>
+                    <li>description</li>
+                    <li>category</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>HotelCard</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="AccessibilityOption">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">AccessibilityOption</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("AccessibilityOption")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>code</li>
+                    <li>description</li>
+                    <li>category</li>
+                    <li>icon</li>
+                    <li>isRequired</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>HotelCardToAccessibilityOption</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="HotelParking">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">HotelParking</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("HotelParking")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>isAvailable</li>
+                    <li>spaces</li>
+                    <li>order</li>
+                    <li>notes</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>HotelCard</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         ) : (
           <div>
             <button
@@ -221,20 +176,15 @@ export default function AmenetyAdminPage() {
             >
               Retour
             </button>
-            {loading ? (
-              <div className="text-center">Chargement...</div>
-            ) : (
-              <TableManager
-                tableName={editingTable.name}
-                items={data[editingTable.name] || []}
-                fields={editingTable.fields}
-                onAdd={handleAdd}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onMoveUp={handleMoveUp}
-                onMoveDown={handleMoveDown}
-              />
+            {editingTable === "HotelAmenity" && <TableManagerHotelAmenity />}
+            {editingTable === "RoomAmenity" && <TableManagerRoomAmenity />}
+            {editingTable === "AccommodationType" && (
+              <TableManagerAccommodationType />
             )}
+            {editingTable === "AccessibilityOption" && (
+              <TableManagerAccessibilityOption />
+            )}
+            {editingTable === "HotelParking" && <TableManagerHotelParking />}
           </div>
         )}
       </div>

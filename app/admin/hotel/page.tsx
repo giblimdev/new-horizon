@@ -1,263 +1,40 @@
-// /app/admin/hotel/page.tsx
-
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import TableManager from "@/components/componentsAdmim/tableManager/TableManager";
+import TableManagerHotelCard from "@/components/componentsAdmim/tableManager/TableManagerHotelCard";
+import TableManagerHotelDetails from "@/components/componentsAdmim/tableManager/TableManagerHotelDetails";
+import TableManagerHotelGroup from "@/components/componentsAdmim/tableManager/TableManagerHotelGroup";
+import TableManagerHotelHighlight from "@/components/componentsAdmim/tableManager/TableManagerHotelHighlight";
+import TableManagerLabel from "@/components/componentsAdmim/tableManager/TableManagerLabel";
+import TableManagerAddress from "@/components/componentsAdmim/tableManager/TableManagerAdress";
 
-// Définition des tables et champs (Label inclus)
-const tables = [
-  {
-    name: "Label",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "code",
-      "description",
-      "category",
-      "icon",
-      "color",
-      "priority",
-      "createdAt",
-      "updatedAt",
-      "HotelDetails",
-      "hotelDetailsId",
-      "HotelCardToLabel",
-    ],
-  },
-  {
-    name: "HotelGroup",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "code",
-      "description",
-      "website",
-      "logoUrl",
-      "foundedYear",
-      "headquarters",
-      "totalProperties",
-      "totalRooms",
-      "marketCap",
-      "annualRevenue",
-      "createdAt",
-      "updatedAt",
-      "HotelCard",
-    ],
-  },
-  {
-    name: "HotelHighlight",
-    fields: [
-      "id",
-      "title",
-      "order",
-      "description",
-      "category",
-      "icon",
-      "priority",
-      "isPromoted",
-      "hotelId",
-      "createdAt",
-      "updatedAt",
-      "HotelCardToHotelHighlight",
-    ],
-  },
-  {
-    name: "HotelCard",
-    fields: [
-      "id",
-      "name",
-      "idCity",
-      "shortDescription",
-      "starRating",
-      "overallRating",
-      "ratingAdjective",
-      "reviewCount",
-      "basePricePerNight",
-      "regularPrice",
-      "currency",
-      "isPartner",
-      "promoMessage",
-      "imageMessage",
-      "cancellationPolicy",
-      "accommodationTypeId",
-      "destinationId",
-      "hotelGroupId",
-      "latitude",
-      "longitude",
-      "detailsId",
-      "parking",
-      "images",
-      "HotelAmenity",
-      "details",
-      "accommodationType",
-      "destination",
-      "hotelGroup",
-      "HotelCardToHotelHighlight",
-      "HotelCardToLabel",
-      "HotelCardToAccessibilityOption",
-      "HotelCardToHotelAmenity",
-    ],
-  },
-  {
-    name: "HotelDetails",
-    fields: [
-      "id",
-      "idHotelCard",
-      "description",
-      "addressId",
-      "createdAt",
-      "updatedAt",
-      "address",
-      "RoomAmenity",
-      "Label",
-      "HotelCard",
-      "HotelDetailsToRoomAmenity",
-    ],
-  },
-  // Ajoute ici d’autres tables principales ou de jointure si besoin
-];
-
-type TableData = {
-  [key: string]: any[];
-};
-
-export default function TableAccordionPage() {
-  const [editingTable, setEditingTable] = useState<null | (typeof tables)[0]>(
-    null
-  );
-  const [data, setData] = useState<TableData>({});
-  const [loading, setLoading] = useState(false);
-
-  // Charge les données de la table sélectionnée depuis l'API
-  useEffect(() => {
-    if (editingTable) {
-      setLoading(true);
-      fetch(`/api/admin/${editingTable.name}`)
-        .then((res) => res.json())
-        .then((result) => {
-          // Prend result.data si l'API renvoie { success, data }
-          const items = Array.isArray(result.data)
-            ? result.data
-            : Array.isArray(result)
-            ? result
-            : [];
-          setData((prev) => ({
-            ...prev,
-            [editingTable.name]: items,
-          }));
-        })
-        .finally(() => setLoading(false));
-    }
-  }, [editingTable]);
-
-  // Handlers CRUD
-  const handleAdd = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    if (res.ok) {
-      const result = await res.json();
-      const newItem = result.data || result;
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: [
-          ...(Array.isArray(prev[editingTable.name])
-            ? prev[editingTable.name]
-            : []),
-          newItem,
-        ],
-      }));
-    }
-  };
-
-  const handleEdit = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}/${item.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    if (res.ok) {
-      const result = await res.json();
-      const updatedItem = result.data || item;
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: (Array.isArray(prev[editingTable.name])
-          ? prev[editingTable.name]
-          : []
-        ).map((i: any) => (i.id === updatedItem.id ? updatedItem : i)),
-      }));
-    }
-  };
-
-  const handleDelete = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}/${item.id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: (Array.isArray(prev[editingTable.name])
-          ? prev[editingTable.name]
-          : []
-        ).filter((i: any) => i.id !== item.id),
-      }));
-    }
-  };
-
-  const handleMoveUp = (item: any, idx: number) => {
-    if (!editingTable) return;
-    if (idx === 0) return;
-    setData((prev) => {
-      const arr = Array.isArray(prev[editingTable.name])
-        ? [...prev[editingTable.name]]
-        : [];
-      [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
-      return { ...prev, [editingTable.name]: arr };
-    });
-  };
-
-  const handleMoveDown = (item: any, idx: number) => {
-    if (!editingTable) return;
-    setData((prev) => {
-      const arr = Array.isArray(prev[editingTable.name])
-        ? [...prev[editingTable.name]]
-        : [];
-      if (idx === arr.length - 1) return prev;
-      [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
-      return { ...prev, [editingTable.name]: arr };
-    });
-  };
+export default function InfoHotelAdminPage() {
+  const [editingTable, setEditingTable] = useState<null | string>(null);
 
   return (
-    <div className="w-screen min-h-screen p-0 m-0 bg-gray-100">
-      <div className="p-5">
-        <h1 className="text-2xl font-bold mb-6 text-center">
-          Gestion des tables Prisma
+    <div className="w-screen min-h-screen p-0 m-0">
+      <div className="m-5 p-5">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Gestion des informations hôtelières
         </h1>
+
         {!editingTable ? (
-          <Accordion type="single" collapsible className="w-full">
-            {tables.map((table) => (
-              <AccordionItem key={table.name} value={table.name}>
+          <div className="space-y-6">
+            {/* HOTEL CARD */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="HotelCard">
                 <div className="flex items-center justify-between pr-4">
                   <AccordionTrigger>
-                    <span className="font-semibold">{table.name}</span>
+                    <span className="font-semibold">HotelCard</span>
                   </AccordionTrigger>
                   <button
-                    onClick={() => setEditingTable(table)}
+                    onClick={() => setEditingTable("HotelCard")}
                     className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
                   >
                     Edit
@@ -265,14 +42,156 @@ export default function TableAccordionPage() {
                 </div>
                 <AccordionContent>
                   <ul className="list-disc pl-6">
-                    {table.fields.map((field) => (
-                      <li key={field}>{field}</li>
-                    ))}
+                    <li>id</li>
+                    <li>name</li>
+                    <li>image</li>
+                    <li>stars</li>
+                    <li>destinationId</li>
+                    <li>hotelGroupId</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>destination</li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-            ))}
-          </Accordion>
+            </Accordion>
+
+            {/* HOTEL DETAILS */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="HotelDetails">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">HotelDetails</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("HotelDetails")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>description</li>
+                    <li>amenities</li>
+                    <li>rules</li>
+                    <li>hotelCardId</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            {/* HOTEL GROUP */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="HotelGroup">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">HotelGroup</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("HotelGroup")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            {/* HOTEL HIGHLIGHT */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="HotelHighlight">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">HotelHighlight</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("HotelHighlight")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>label</li>
+                    <li>hotelCardId</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            {/* LABEL */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="Label">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">Label</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("Label")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            {/* ADDRESS */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="Address">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">Address</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("Address")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>streetNumber</li>
+                    <li>streetName</li>
+                    <li>addressLine2</li>
+                    <li>postalCode</li>
+                    <li>cityId</li>
+                    <li>neighborhoodId</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>city</li>
+                    <li>neighborhood</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         ) : (
           <div>
             <button
@@ -281,24 +200,14 @@ export default function TableAccordionPage() {
             >
               Retour
             </button>
-            {loading ? (
-              <div className="text-center">Chargement...</div>
-            ) : (
-              <TableManager
-                tableName={editingTable.name}
-                items={
-                  Array.isArray(data[editingTable.name])
-                    ? data[editingTable.name]
-                    : []
-                }
-                fields={editingTable.fields}
-                onAdd={handleAdd}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onMoveUp={handleMoveUp}
-                onMoveDown={handleMoveDown}
-              />
+            {editingTable === "HotelCard" && <TableManagerHotelCard />}
+            {editingTable === "HotelDetails" && <TableManagerHotelDetails />}
+            {editingTable === "HotelGroup" && <TableManagerHotelGroup />}
+            {editingTable === "HotelHighlight" && (
+              <TableManagerHotelHighlight />
             )}
+            {editingTable === "Label" && <TableManagerLabel />}
+            {editingTable === "Address" && <TableManagerAddress />}
           </div>
         )}
       </div>

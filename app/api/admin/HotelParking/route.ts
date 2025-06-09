@@ -5,13 +5,27 @@ import { prisma } from "@/lib/prisma";
 
 // GET /api/admin/HotelParking
 export async function GET() {
-  const data = await prisma.hotelParking.findMany();
-  return NextResponse.json(data);
+  try {
+    const data = await prisma.hotelParking.findMany();
+    return NextResponse.json(data, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Erreur lors de la récupération des parkings d'hôtel" },
+      { status: 500 }
+    );
+  }
 }
 
 // POST /api/admin/HotelParking
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const item = await prisma.hotelParking.create({ data: body });
-  return NextResponse.json(item, { status: 201 });
+  try {
+    const body = await req.json();
+    const item = await prisma.hotelParking.create({ data: body });
+    return NextResponse.json(item, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Échec de la création du parking d'hôtel" },
+      { status: 400 }
+    );
+  }
 }

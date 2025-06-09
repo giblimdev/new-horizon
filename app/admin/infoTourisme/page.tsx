@@ -1,212 +1,37 @@
-// /app/admin/infoTourisme/page.tsx
-
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import TableManager from "@/components/componentsAdmim/tableManager/TableManager";
+import TableManagerCountry from "@/components/componentsAdmim/tableManager/TableManagerCountry";
+import TableManagerCity from "@/components/componentsAdmim/tableManager/TableManagerCity";
+import TableManagerNeighborhood from "@/components/componentsAdmim/tableManager/TableManagerNeighborhood";
+import TableManagerLandmark from "@/components/componentsAdmim/tableManager/TableManagerLandmark";
+import TableManagerDestination from "@/components/componentsAdmim/tableManager/TableManagerDestination";
 
-// Liste des tables et champs
-const tables = [
-  {
-    name: "Country",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "code",
-      "language",
-      "currency",
-      "createdAt",
-      "updatedAt",
-      "cities",
-    ],
-  },
-  {
-    name: "City",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "countryId",
-      "createdAt",
-      "updatedAt",
-      "country",
-      "neighborhoods",
-      "landmarks",
-      "addresses",
-      "destinations",
-      "DestinationToCity",
-    ],
-  },
-  {
-    name: "Neighborhood",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "cityId",
-      "createdAt",
-      "updatedAt",
-      "city",
-      "addresses",
-    ],
-  },
-  {
-    name: "Landmark",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "description",
-      "type",
-      "cityId",
-      "latitude",
-      "longitude",
-      "createdAt",
-      "updatedAt",
-      "city",
-    ],
-  },
-  {
-    name: "Destination",
-    fields: [
-      "id",
-      "name",
-      "order",
-      "description",
-      "type",
-      "popularityScore",
-      "cityId",
-      "latitude",
-      "longitude",
-      "radius",
-      "createdAt",
-      "updatedAt",
-      "HotelCard",
-      "City",
-      "DestinationToCity",
-    ],
-  },
-];
-
-type TableData = {
-  [key: string]: any[];
-};
-
-export default function TableAccordion() {
-  const [editingTable, setEditingTable] = useState<null | (typeof tables)[0]>(
-    null
-  );
-  const [data, setData] = useState<TableData>({});
-  const [loading, setLoading] = useState(false);
-
-  // Charger dynamiquement les données de la table sélectionnée
-  useEffect(() => {
-    if (editingTable) {
-      setLoading(true);
-      fetch(`/api/admin/${editingTable.name}`)
-        .then((res) => res.json())
-        .then((items) =>
-          setData((prev) => ({
-            ...prev,
-            [editingTable.name]: items,
-          }))
-        )
-        .finally(() => setLoading(false));
-    }
-  }, [editingTable]);
-
-  // Handlers CRUD
-  const handleAdd = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    if (res.ok) {
-      const newItem = await res.json();
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: [...(prev[editingTable.name] || []), newItem],
-      }));
-    }
-  };
-
-  const handleEdit = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}/${item.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    if (res.ok) {
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: prev[editingTable.name].map((i: any) =>
-          i.id === item.id ? item : i
-        ),
-      }));
-    }
-  };
-
-  const handleDelete = async (item: any) => {
-    if (!editingTable) return;
-    const res = await fetch(`/api/admin/${editingTable.name}/${item.id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setData((prev) => ({
-        ...prev,
-        [editingTable.name]: prev[editingTable.name].filter(
-          (i: any) => i.id !== item.id
-        ),
-      }));
-    }
-  };
-
-  const handleMoveUp = (item: any, idx: number) => {
-    if (!editingTable) return;
-    if (idx === 0) return;
-    setData((prev) => {
-      const newItems = [...prev[editingTable.name]];
-      [newItems[idx - 1], newItems[idx]] = [newItems[idx], newItems[idx - 1]];
-      return { ...prev, [editingTable.name]: newItems };
-    });
-  };
-
-  const handleMoveDown = (item: any, idx: number) => {
-    if (!editingTable) return;
-    setData((prev) => {
-      const newItems = [...prev[editingTable.name]];
-      if (idx === newItems.length - 1) return prev;
-      [newItems[idx], newItems[idx + 1]] = [newItems[idx + 1], newItems[idx]];
-      return { ...prev, [editingTable.name]: newItems };
-    });
-  };
+export default function InfoTourismeAdminPage() {
+  const [editingTable, setEditingTable] = useState<null | string>(null);
 
   return (
-    <div className="w-screen min-h-screen p-0 m-0 bg-gray-100">
-      <div className="p-5">
-        <h1 className="text-2xl font-bold mb-6 text-center">
-          Gestion des tables Prisma
+    <div className="w-screen min-h-screen p-0 m-0">
+      <div className="m-5 p-5 bg">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Gestion des informations touristiques
         </h1>
         {!editingTable ? (
-          <Accordion type="single" collapsible className="w-full">
-            {tables.map((table) => (
-              <AccordionItem key={table.name} value={table.name}>
+          <div className="space-y-6">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="Country">
                 <div className="flex items-center justify-between pr-4">
                   <AccordionTrigger>
-                    <span className="font-semibold">{table.name}</span>
+                    <span className="font-semibold">Country</span>
                   </AccordionTrigger>
                   <button
-                    onClick={() => setEditingTable(table)}
+                    onClick={() => setEditingTable("Country")}
                     className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
                   >
                     Edit
@@ -214,14 +39,146 @@ export default function TableAccordion() {
                 </div>
                 <AccordionContent>
                   <ul className="list-disc pl-6">
-                    {table.fields.map((field) => (
-                      <li key={field}>{field}</li>
-                    ))}
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>code</li>
+                    <li>language</li>
+                    <li>currency</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>cities</li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-            ))}
-          </Accordion>
+            </Accordion>
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="City">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">City</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("City")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>countryId</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>country</li>
+                    <li>neighborhoods</li>
+                    <li>landmarks</li>
+                    <li>addresses</li>
+                    <li>destinations</li>
+                    <li>DestinationToCity</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="Neighborhood">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">Neighborhood</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("Neighborhood")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>cityId</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>city</li>
+                    <li>addresses</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="Landmark">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">Landmark</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("Landmark")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>description</li>
+                    <li>type</li>
+                    <li>cityId</li>
+                    <li>latitude</li>
+                    <li>longitude</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>city</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="Destination">
+                <div className="flex items-center justify-between pr-4">
+                  <AccordionTrigger>
+                    <span className="font-semibold">Destination</span>
+                  </AccordionTrigger>
+                  <button
+                    onClick={() => setEditingTable("Destination")}
+                    className="ml-2 px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <AccordionContent>
+                  <ul className="list-disc pl-6">
+                    <li>id</li>
+                    <li>name</li>
+                    <li>order</li>
+                    <li>description</li>
+                    <li>type</li>
+                    <li>popularityScore</li>
+                    <li>cityId</li>
+                    <li>latitude</li>
+                    <li>longitude</li>
+                    <li>radius</li>
+                    <li>createdAt</li>
+                    <li>updatedAt</li>
+                    <li>HotelCard</li>
+                    <li>City</li>
+                    <li>DestinationToCity</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         ) : (
           <div>
             <button
@@ -230,20 +187,11 @@ export default function TableAccordion() {
             >
               Retour
             </button>
-            {loading ? (
-              <div className="text-center">Chargement...</div>
-            ) : (
-              <TableManager
-                tableName={editingTable.name}
-                items={data[editingTable.name] || []}
-                fields={editingTable.fields}
-                onAdd={handleAdd}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onMoveUp={handleMoveUp}
-                onMoveDown={handleMoveDown}
-              />
-            )}
+            {editingTable === "Country" && <TableManagerCountry />}
+            {editingTable === "City" && <TableManagerCity />}
+            {editingTable === "Neighborhood" && <TableManagerNeighborhood />}
+            {editingTable === "Landmark" && <TableManagerLandmark />}
+            {editingTable === "Destination" && <TableManagerDestination />}
           </div>
         )}
       </div>

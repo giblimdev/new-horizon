@@ -1,17 +1,31 @@
-// @/app/api/admin/City/route.ts
+// /app/api/admin/City/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// GET /api/adim/City
+// GET /api/admin/City
 export async function GET() {
-  const amenities = await prisma.city.findMany();
-  return NextResponse.json(amenities);
+  try {
+    const data = await prisma.city.findMany();
+    return NextResponse.json(data, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Erreur lors de la récupération des villes" },
+      { status: 500 }
+    );
+  }
 }
 
-// POST /api/adim/City
+// POST /api/admin/City
 export async function POST(req: NextRequest) {
-  const data = await req.json();
-  const amenity = await prisma.hotelAmenity.create({ data });
-  return NextResponse.json(amenity, { status: 201 });
+  try {
+    const body = await req.json();
+    const item = await prisma.city.create({ data: body });
+    return NextResponse.json(item, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Échec de la création de la ville" },
+      { status: 400 }
+    );
+  }
 }
