@@ -1,185 +1,169 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { z } from "zod"; // Optional: for validation
 
-// Optional: Define validation schema
-const accommodationTypeSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-  // Add other fields based on your model
-});
+// Type pour les paramètres de route Next.js 15
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: NextRequest, context: RouteContext) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
 
-    // Validate ID format (if using UUID)
+    // Validation de l'ID
     if (!id || id.trim() === "") {
       return NextResponse.json(
-        { error: "Invalid accommodation type ID" },
+        { error: "ID d'option d'accessibilité invalide" },
         { status: 400 }
       );
     }
 
-    const accommodationType = await prisma.accommodationType.findUnique({
+    const accessibilityOption = await prisma.accessibilityOption.findUnique({
       where: { id },
-      // Optional: include related data
+      // Optionnel: inclure les données liées
       // include: {
       //   accommodations: true,
       // },
     });
 
-    if (!accommodationType) {
+    if (!accessibilityOption) {
       return NextResponse.json(
-        { error: "Accommodation type not found" },
+        { error: "Option d'accessibilité non trouvée" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(accommodationType);
+    return NextResponse.json(accessibilityOption);
   } catch (error) {
-    console.error("GET AccommodationType error:", error);
+    console.error("GET AccessibilityOption error:", error);
 
-    // More specific error handling
     if (error instanceof Error && error.message.includes("Invalid")) {
       return NextResponse.json(
-        { error: "Invalid accommodation type ID format" },
+        { error: "Format d'ID d'option d'accessibilité invalide" },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Erreur serveur interne" },
       { status: 500 }
     );
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(req: NextRequest, context: RouteContext) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
 
-    // Validate ID
+    // Validation de l'ID
     if (!id || id.trim() === "") {
       return NextResponse.json(
-        { error: "Invalid accommodation type ID" },
+        { error: "ID d'option d'accessibilité invalide" },
         { status: 400 }
       );
     }
 
     const body = await req.json();
 
-    // Optional: Validate request body
-    // const validatedData = accommodationTypeSchema.parse(body);
-
-    // Check if record exists before updating
-    const existingType = await prisma.accommodationType.findUnique({
+    // Vérifier si l'enregistrement existe avant la mise à jour
+    const existingOption = await prisma.accessibilityOption.findUnique({
       where: { id },
     });
 
-    if (!existingType) {
+    if (!existingOption) {
       return NextResponse.json(
-        { error: "Accommodation type not found" },
+        { error: "Option d'accessibilité non trouvée" },
         { status: 404 }
       );
     }
 
-    const updated = await prisma.accommodationType.update({
+    const updated = await prisma.accessibilityOption.update({
       where: { id },
       data: {
-        // Filter out undefined values
+        // Filtrer les valeurs undefined
         ...Object.fromEntries(
           Object.entries(body).filter(([_, value]) => value !== undefined)
         ),
-        updatedAt: new Date(), // If you have this field
+        updatedAt: new Date(), // Si vous avez ce champ
       },
     });
 
     return NextResponse.json(updated);
   } catch (error) {
-    console.error("PUT AccommodationType error:", error);
+    console.error("PUT AccessibilityOption error:", error);
 
-    // Handle specific Prisma errors
+    // Gestion des erreurs Prisma spécifiques
     if (error instanceof Error) {
       if (error.message.includes("Unique constraint")) {
         return NextResponse.json(
-          { error: "Accommodation type with this name already exists" },
+          { error: "Une option d'accessibilité avec ce nom existe déjà" },
           { status: 409 }
         );
       }
 
       if (error.message.includes("Invalid")) {
         return NextResponse.json(
-          { error: "Invalid data format" },
+          { error: "Format de données invalide" },
           { status: 400 }
         );
       }
     }
 
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Erreur serveur interne" },
       { status: 500 }
     );
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(req: NextRequest, context: RouteContext) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
 
-    // Validate ID
+    // Validation de l'ID
     if (!id || id.trim() === "") {
       return NextResponse.json(
-        { error: "Invalid accommodation type ID" },
+        { error: "ID d'option d'accessibilité invalide" },
         { status: 400 }
       );
     }
 
-    // Check if record exists before deleting
-    const existingType = await prisma.accommodationType.findUnique({
+    // Vérifier si l'enregistrement existe avant suppression
+    const existingOption = await prisma.accessibilityOption.findUnique({
       where: { id },
     });
 
-    if (!existingType) {
+    if (!existingOption) {
       return NextResponse.json(
-        { error: "Accommodation type not found" },
+        { error: "Option d'accessibilité non trouvée" },
         { status: 404 }
       );
     }
 
-    // Optional: Check for related records before deletion
+    // Optionnel: Vérifier les enregistrements liés avant suppression
     // const relatedAccommodations = await prisma.accommodation.count({
-    //   where: { accommodationTypeId: id },
+    //   where: { accessibilityOptions: { some: { id } } },
     // });
 
     // if (relatedAccommodations > 0) {
     //   return NextResponse.json(
-    //     { error: "Cannot delete accommodation type with existing accommodations" },
+    //     { error: "Impossible de supprimer une option d'accessibilité utilisée par des hébergements" },
     //     { status: 409 }
     //   );
     // }
 
-    await prisma.accommodationType.delete({
+    await prisma.accessibilityOption.delete({
       where: { id },
     });
 
     return NextResponse.json(
-      { message: "Accommodation type deleted successfully" },
+      { message: "Option d'accessibilité supprimée avec succès" },
       { status: 200 }
     );
   } catch (error) {
-    console.error("DELETE AccommodationType error:", error);
+    console.error("DELETE AccessibilityOption error:", error);
 
-    // Handle foreign key constraint errors
+    // Gestion des erreurs de contrainte de clé étrangère
     if (
       error instanceof Error &&
       error.message.includes("Foreign key constraint")
@@ -187,14 +171,14 @@ export async function DELETE(
       return NextResponse.json(
         {
           error:
-            "Cannot delete accommodation type with existing accommodations",
+            "Impossible de supprimer une option d'accessibilité utilisée par des hébergements",
         },
         { status: 409 }
       );
     }
 
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Erreur serveur interne" },
       { status: 500 }
     );
   }

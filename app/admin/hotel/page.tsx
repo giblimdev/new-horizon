@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -14,8 +14,56 @@ import TableManagerHotelHighlight from "@/components/componentsAdmim/tableManage
 import TableManagerLabel from "@/components/componentsAdmim/tableManager/TableManagerLabel";
 import TableManagerAddress from "@/components/componentsAdmim/tableManager/TableManagerAdress";
 
+// Types pour les données nécessaires à TableManagerAddress
+type City = { id: string; name: string };
+type Neighborhood = { id: string; name: string; cityId: string };
+
 export default function InfoHotelAdminPage() {
   const [editingTable, setEditingTable] = useState<null | string>(null);
+  const [cityOptions, setCityOptions] = useState<City[]>([]);
+  const [neighborhoodOptions, setNeighborhoodOptions] = useState<
+    Neighborhood[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Charger les données nécessaires pour TableManagerAddress
+  const fetchAddressData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Charger les villes
+      const citiesResponse = await fetch("/api/admin/City");
+      if (!citiesResponse.ok) {
+        throw new Error("Erreur lors du chargement des villes");
+      }
+      const cities = await citiesResponse.json();
+      setCityOptions(Array.isArray(cities) ? cities : []);
+
+      // Charger les quartiers
+      const neighborhoodsResponse = await fetch("/api/admin/Neighborhood");
+      if (!neighborhoodsResponse.ok) {
+        throw new Error("Erreur lors du chargement des quartiers");
+      }
+      const neighborhoods = await neighborhoodsResponse.json();
+      setNeighborhoodOptions(Array.isArray(neighborhoods) ? neighborhoods : []);
+    } catch (err) {
+      console.error("Erreur lors du chargement des données:", err);
+      setError(err instanceof Error ? err.message : "Erreur de chargement");
+      // Définir des valeurs par défaut en cas d'erreur
+      setCityOptions([]);
+      setNeighborhoodOptions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Charger les données quand on accède à la table Address
+  useEffect(() => {
+    if (editingTable === "Address") {
+      fetchAddressData();
+    }
+  }, [editingTable]);
 
   return (
     <div className="w-screen min-h-screen p-0 m-0">
@@ -200,6 +248,31 @@ export default function InfoHotelAdminPage() {
             >
               Retour
             </button>
+
+            {/* Affichage d'erreur si le chargement des données échoue */}
+            {error && editingTable === "Address" && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+                <strong>Erreur:</strong> {error}
+                <button
+                  onClick={fetchAddressData}
+                  className="ml-4 px-2 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
+                >
+                  Réessayer
+                </button>
+              </div>
+            )}
+
+            {/* Indicateur de chargement pour Address */}
+            {loading && editingTable === "Address" && (
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span className="ml-2 text-slate-600">
+                  Chargement des données...
+                </span>
+              </div>
+            )}
+
+            {/* Rendu conditionnel des composants */}
             {editingTable === "HotelCard" && <TableManagerHotelCard />}
             {editingTable === "HotelDetails" && <TableManagerHotelDetails />}
             {editingTable === "HotelGroup" && <TableManagerHotelGroup />}
@@ -207,7 +280,12 @@ export default function InfoHotelAdminPage() {
               <TableManagerHotelHighlight />
             )}
             {editingTable === "Label" && <TableManagerLabel />}
-            {editingTable === "Address" && <TableManagerAddress />}
+            {editingTable === "Address" && !loading && !error && (
+              <TableManagerAddress
+                cityOptions={cityOptions}
+                neighborhoodOptions={neighborhoodOptions}
+              />
+            )}
           </div>
         )}
       </div>

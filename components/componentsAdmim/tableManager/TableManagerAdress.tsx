@@ -34,7 +34,7 @@ type Neighborhood = { id: string; name: string; cityId: string };
 function formatDate(date: string | Date) {
   if (!date) return "";
   const d = typeof date === "string" ? new Date(date) : date;
-  return d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR");
 }
 
 type TableManagerAddressProps = {
@@ -63,9 +63,19 @@ export default function TableManagerAddress({
     setError(null);
     try {
       const response = await fetch("/api/admin/Address");
-      if (!response.ok)
-        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Erreur ${response.status}: ${response.statusText}`
+        );
+      }
       const data = await response.json();
+
+      // Vérifier que data est un tableau
+      if (!Array.isArray(data)) {
+        throw new Error("Format de données invalide");
+      }
+
       // Tri par order si disponible
       const sortedData = data.sort(
         (a: Address, b: Address) => (a.order ?? 100) - (b.order ?? 100)
@@ -74,6 +84,7 @@ export default function TableManagerAddress({
       setOriginalItems(JSON.parse(JSON.stringify(sortedData)));
       setHasUnsavedChanges(false);
     } catch (err) {
+      console.error("Erreur lors du chargement des adresses:", err);
       setError(err instanceof Error ? err.message : "Erreur de chargement");
     } finally {
       setLoading(false);
@@ -85,50 +96,99 @@ export default function TableManagerAddress({
   }, []);
 
   const handleAdd = async (item: Partial<Address>) => {
+    if (!item.streetName || !item.postalCode || !item.cityId) {
+      setError("Les champs nom de rue, code postal et ville sont obligatoires");
+      return;
+    }
+
+    setSaving(true);
+    setError(null);
     try {
       const maxOrder =
         items.length > 0 ? Math.max(...items.map((i) => i.order ?? 0)) : 0;
       const newItem = { ...item, order: maxOrder + 1 };
+
       const response = await fetch("/api/admin/Address", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newItem),
       });
-      if (!response.ok) throw new Error("Erreur lors de l'ajout");
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Erreur lors de l'ajout");
+      }
+
       await fetchItems();
+      setEditMode(null);
     } catch (err) {
+      console.error("Erreur lors de l'ajout:", err);
       setError(err instanceof Error ? err.message : "Erreur lors de l'ajout");
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleEdit = async (item: Address) => {
+    if (!item.streetName || !item.postalCode || !item.cityId) {
+      setError("Les champs nom de rue, code postal et ville sont obligatoires");
+      return;
+    }
+
+    setSaving(true);
+    setError(null);
     try {
       const response = await fetch(`/api/admin/Address/${item.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(item),
       });
-      if (!response.ok) throw new Error("Erreur lors de la modification");
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Erreur lors de la modification");
+      }
+
       await fetchItems();
+      setEditMode(null);
     } catch (err) {
+      console.error("Erreur lors de la modification:", err);
       setError(
         err instanceof Error ? err.message : "Erreur lors de la modification"
       );
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleDelete = async (item: Address) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer cette adresse ?")) return;
+    if (
+      !confirm(
+        `Êtes-vous sûr de vouloir supprimer l'adresse "${item.streetName}" ?`
+      )
+    )
+      return;
+
+    setSaving(true);
+    setError(null);
     try {
       const response = await fetch(`/api/admin/Address/${item.id}`, {
         method: "DELETE",
       });
-      if (!response.ok) throw new Error("Erreur lors de la suppression");
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Erreur lors de la suppression");
+      }
+
       await fetchItems();
     } catch (err) {
+      console.error("Erreur lors de la suppression:", err);
       setError(
         err instanceof Error ? err.message : "Erreur lors de la suppression"
       );
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -136,12 +196,16 @@ export default function TableManagerAddress({
   const handleMove = (index: number, direction: "up" | "down") => {
     if (direction === "up" && index === 0) return;
     if (direction === "down" && index === items.length - 1) return;
+
     const newItems = [...items];
     const swapIdx = direction === "up" ? index - 1 : index + 1;
     [newItems[index], newItems[swapIdx]] = [newItems[swapIdx], newItems[index]];
+
+    // Réassigner les ordres
     newItems.forEach((item, idx) => {
       item.order = idx + 1;
     });
+
     setItems(newItems);
     setHasUnsavedChanges(true);
   };
@@ -155,16 +219,24 @@ export default function TableManagerAddress({
         id: item.id,
         order: index + 1,
       }));
+
       const response = await fetch("/api/admin/Address/reorder", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ updates }),
       });
-      if (!response.ok)
-        throw new Error("Erreur lors de la sauvegarde de l'ordre");
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || "Erreur lors de la sauvegarde de l'ordre"
+        );
+      }
+
       await fetchItems();
       setHasUnsavedChanges(false);
     } catch (err) {
+      console.error("Erreur lors de la sauvegarde:", err);
       setError(
         err instanceof Error ? err.message : "Erreur lors de la sauvegarde"
       );
@@ -180,6 +252,13 @@ export default function TableManagerAddress({
     }
   };
 
+  // Fonction pour obtenir les quartiers filtrés par ville
+  const getFilteredNeighborhoods = (cityId: string) => {
+    return neighborhoodOptions.filter(
+      (neighborhood) => neighborhood.cityId === cityId
+    );
+  };
+
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
@@ -189,7 +268,8 @@ export default function TableManagerAddress({
               Adresses
             </h2>
             <p className="text-slate-600 mt-1">
-              Gérez les adresses de votre base de données
+              Gérez les adresses de votre base de données ({items.length}{" "}
+              adresse{items.length !== 1 ? "s" : ""})
             </p>
           </div>
           <div className="flex gap-2">
@@ -198,6 +278,7 @@ export default function TableManagerAddress({
                 <Button
                   onClick={resetOrder}
                   variant="outline"
+                  disabled={saving}
                   className="flex items-center gap-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
                 >
                   <RotateCcw size={16} />
@@ -219,6 +300,7 @@ export default function TableManagerAddress({
             )}
             <Button
               onClick={() => setEditMode({ mode: "add" })}
+              disabled={saving}
               className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
             >
               <PlusCircle size={18} />
@@ -263,14 +345,20 @@ export default function TableManagerAddress({
           <ItemFormAddress
             initialData={editMode.mode === "edit" ? editMode.item : {}}
             cityOptions={cityOptions}
-            neighborhoodOptions={neighborhoodOptions}
+            neighborhoodOptions={
+              editMode.mode === "edit" && editMode.item?.cityId
+                ? getFilteredNeighborhoods(editMode.item.cityId)
+                : neighborhoodOptions
+            }
             onSubmit={(item: Partial<Address>) => {
-              if (editMode.mode === "add") handleAdd(item);
-              else if (editMode.item && editMode.item.id)
+              if (editMode.mode === "add") {
+                handleAdd(item);
+              } else if (editMode.item?.id) {
                 handleEdit({ ...editMode.item, ...item, id: editMode.item.id });
-              setEditMode(null);
+              }
             }}
             onCancel={() => setEditMode(null)}
+            isLoading={saving}
           />
         </div>
       )}
@@ -302,25 +390,26 @@ export default function TableManagerAddress({
               }`}
             >
               <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="font-semibold text-lg text-slate-800">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-lg text-slate-800 truncate">
                     {item.streetNumber ? `${item.streetNumber} ` : ""}
                     {item.streetName}
                   </h3>
-                  <div className="text-sm text-slate-600">
+                  <div className="text-sm text-slate-600 space-y-1">
                     {item.addressLine2 && (
-                      <span>
-                        {item.addressLine2}
-                        <br />
-                      </span>
+                      <div className="truncate">{item.addressLine2}</div>
                     )}
-                    {item.postalCode} {item.city?.name || ""}
-                    {item.neighborhood?.name
-                      ? `, ${item.neighborhood.name}`
-                      : ""}
+                    <div className="truncate">
+                      {item.postalCode} {item.city?.name || "Ville inconnue"}
+                    </div>
+                    {item.neighborhood?.name && (
+                      <div className="truncate text-purple-600">
+                        📍 {item.neighborhood.name}
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-1 ml-2">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -343,11 +432,12 @@ export default function TableManagerAddress({
                   </Button>
                 </div>
               </div>
+
               <div className="text-xs text-slate-500 mb-4 space-y-1 bg-slate-50 p-3 rounded-lg">
                 <div className="flex justify-between">
                   <span>Ordre:</span>
                   <span className="font-medium text-purple-600">
-                    {item.order}
+                    {item.order ?? "Non défini"}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -359,6 +449,7 @@ export default function TableManagerAddress({
                   <span>{formatDate(item.updatedAt)}</span>
                 </div>
               </div>
+
               <div className="flex gap-2 pt-4 border-t border-slate-100">
                 <Button
                   variant="outline"

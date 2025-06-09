@@ -1,17 +1,45 @@
-// @/app/api/admin/hotelCard/[id]/route.ts
+// app/api/admin/hotelCard/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-// GET /api/admin/hotelCard/[id]
-export async function GET(req: NextRequest) {
-  try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
+// Type pour les paramètres de route Next.js 15
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
 
-    if (!id) {
+// Interface pour la validation des données de carte hôtelière
+interface UpdateHotelCardData {
+  name?: string;
+  idCity?: string;
+  shortDescription?: string;
+  starRating?: number;
+  overallRating?: number;
+  ratingAdjective?: string;
+  reviewCount?: number;
+  basePricePerNight?: number;
+  regularPrice?: number;
+  currency?: string;
+  isPartner?: boolean;
+  promoMessage?: string;
+  imageMessage?: string;
+  cancellationPolicy?: string;
+  accommodationTypeId?: string;
+  destinationId?: string;
+  hotelGroupId?: string;
+  latitude?: number;
+  longitude?: number;
+  detailsId?: string;
+}
+
+export async function GET(req: NextRequest, context: RouteContext) {
+  try {
+    const { id } = await context.params;
+
+    // Validation de l'ID
+    if (!id || id.trim() === "") {
       return NextResponse.json(
-        { error: "ID manquant dans l'URL" },
+        { error: "ID de carte hôtelière invalide" },
         { status: 400 }
       );
     }
@@ -19,58 +47,209 @@ export async function GET(req: NextRequest) {
     const hotelCard = await prisma.hotelCard.findUnique({
       where: { id },
       include: {
-        accommodationType: true,
+        accommodationType: {
+          select: {
+            id: true,
+            name: true,
+            code: true,
+            category: true,
+            description: true,
+          },
+        },
         destination: {
-          include: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            popularityScore: true,
             City: {
-              include: {
-                country: true,
+              select: {
+                id: true,
+                name: true,
+                country: {
+                  select: {
+                    name: true,
+                    code: true,
+                  },
+                },
               },
             },
           },
         },
-        hotelGroup: true,
+        hotelGroup: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            website: true,
+            logoUrl: true,
+          },
+        },
         details: {
           include: {
             address: {
               include: {
                 city: {
-                  include: {
-                    country: true,
+                  select: {
+                    name: true,
+                    country: {
+                      select: {
+                        name: true,
+                        code: true,
+                      },
+                    },
                   },
                 },
-                neighborhood: true,
+                neighborhood: {
+                  select: {
+                    name: true,
+                  },
+                },
               },
             },
-            RoomAmenity: true,
-            Label: true,
+            RoomAmenity: {
+              select: {
+                id: true,
+                name: true,
+                category: true,
+                icon: true,
+              },
+              orderBy: {
+                order: "asc",
+              },
+            },
+            Label: {
+              select: {
+                id: true,
+                name: true,
+                code: true,
+                category: true,
+                icon: true,
+                color: true,
+              },
+              orderBy: {
+                priority: "desc",
+              },
+            },
+          },
+        },
+        parking: {
+          select: {
+            id: true,
+            isAvailable: true,
+            spaces: true,
+            notes: true,
           },
         },
         images: {
-          orderBy: { order: "asc" },
+          select: {
+            id: true,
+            imageUrl: true,
+            imageType: true,
+            alt: true,
+          },
+          orderBy: {
+            order: "asc",
+          },
+        },
+        HotelAmenity: {
+          select: {
+            id: true,
+            name: true,
+            category: true,
+            icon: true,
+            description: true,
+          },
+          orderBy: {
+            order: "asc",
+          },
         },
         HotelCardToHotelHighlight: {
-          include: { hotelHighlight: true },
-          orderBy: { order: "asc" },
+          include: {
+            hotelHighlight: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                category: true,
+                icon: true,
+                priority: true,
+                isPromoted: true,
+              },
+            },
+          },
+          orderBy: {
+            order: "asc",
+          },
         },
         HotelCardToLabel: {
-          include: { label: true },
-          orderBy: { order: "asc" },
+          include: {
+            label: {
+              select: {
+                id: true,
+                name: true,
+                code: true,
+                category: true,
+                icon: true,
+                color: true,
+                priority: true,
+              },
+            },
+          },
+          orderBy: {
+            order: "asc",
+          },
         },
         HotelCardToAccessibilityOption: {
-          include: { accessibilityOption: true },
-          orderBy: { order: "asc" },
+          include: {
+            accessibilityOption: {
+              select: {
+                id: true,
+                name: true,
+                code: true,
+                category: true,
+                icon: true,
+                description: true,
+              },
+            },
+          },
+          orderBy: {
+            order: "asc",
+          },
         },
         HotelCardToHotelAmenity: {
-          include: { hotelAmenity: true },
-          orderBy: { order: "asc" },
+          include: {
+            hotelAmenity: {
+              select: {
+                id: true,
+                name: true,
+                category: true,
+                icon: true,
+                description: true,
+              },
+            },
+          },
+          orderBy: {
+            order: "asc",
+          },
+        },
+        _count: {
+          select: {
+            parking: true,
+            images: true,
+            HotelAmenity: true,
+            HotelCardToHotelHighlight: true,
+            HotelCardToLabel: true,
+            HotelCardToAccessibilityOption: true,
+            HotelCardToHotelAmenity: true,
+          },
         },
       },
     });
 
     if (!hotelCard) {
       return NextResponse.json(
-        { error: "Carte d'hôtel non trouvée" },
+        { error: "Carte hôtelière non trouvée" },
         { status: 404 }
       );
     }
@@ -78,228 +257,338 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(hotelCard);
   } catch (error) {
     console.error("GET HotelCard error:", error);
+
+    if (error instanceof Error && error.message.includes("Invalid")) {
+      return NextResponse.json(
+        { error: "Format d'ID de carte hôtelière invalide" },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Échec de la récupération de la carte d'hôtel" },
+      { error: "Erreur serveur interne" },
       { status: 500 }
     );
   }
 }
 
-// PUT /api/admin/hotelCard/[id]
-export async function PUT(req: NextRequest) {
+export async function PUT(req: NextRequest, context: RouteContext) {
   try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
+    const { id } = await context.params;
 
-    if (!id) {
+    // Validation de l'ID
+    if (!id || id.trim() === "") {
       return NextResponse.json(
-        { error: "ID manquant dans l'URL" },
+        { error: "ID de carte hôtelière invalide" },
         { status: 400 }
       );
     }
 
-    const data = await req.json();
+    const body: UpdateHotelCardData = await req.json();
 
-    // Validation des données obligatoires
+    // Validation des données
+    if (body.name && body.name.trim().length === 0) {
+      return NextResponse.json(
+        { error: "Le nom de l'hôtel ne peut pas être vide" },
+        { status: 400 }
+      );
+    }
+
     if (
-      !data.name ||
-      !data.idCity ||
-      !data.starRating ||
-      !data.basePricePerNight
+      body.starRating !== undefined &&
+      (body.starRating < 1 || body.starRating > 5)
     ) {
       return NextResponse.json(
+        { error: "La note étoilée doit être entre 1 et 5" },
+        { status: 400 }
+      );
+    }
+
+    if (
+      body.overallRating !== undefined &&
+      (body.overallRating < 0 || body.overallRating > 10)
+    ) {
+      return NextResponse.json(
+        { error: "La note globale doit être entre 0 et 10" },
+        { status: 400 }
+      );
+    }
+
+    if (body.basePricePerNight !== undefined && body.basePricePerNight < 0) {
+      return NextResponse.json(
+        { error: "Le prix de base doit être positif" },
+        { status: 400 }
+      );
+    }
+
+    if (
+      body.latitude !== undefined &&
+      (body.latitude < -90 || body.latitude > 90)
+    ) {
+      return NextResponse.json(
+        { error: "La latitude doit être entre -90 et 90" },
+        { status: 400 }
+      );
+    }
+
+    if (
+      body.longitude !== undefined &&
+      (body.longitude < -180 || body.longitude > 180)
+    ) {
+      return NextResponse.json(
+        { error: "La longitude doit être entre -180 et 180" },
+        { status: 400 }
+      );
+    }
+
+    // Vérifier si la carte hôtelière existe avant la mise à jour
+    const existingHotelCard = await prisma.hotelCard.findUnique({
+      where: { id },
+    });
+
+    if (!existingHotelCard) {
+      return NextResponse.json(
+        { error: "Carte hôtelière non trouvée" },
+        { status: 404 }
+      );
+    }
+
+    // Vérifier les références étrangères si fournies
+    if (body.accommodationTypeId) {
+      const accommodationTypeExists = await prisma.accommodationType.findUnique(
         {
-          error:
-            "Le nom, la ville, le nombre d'étoiles et le prix de base sont requis",
-        },
-        { status: 400 }
+          where: { id: body.accommodationTypeId },
+        }
       );
+      if (!accommodationTypeExists) {
+        return NextResponse.json(
+          { error: "Type d'hébergement non trouvé" },
+          { status: 400 }
+        );
+      }
     }
 
-    if (data.starRating < 1 || data.starRating > 5) {
-      return NextResponse.json(
-        { error: "Le nombre d'étoiles doit être entre 1 et 5" },
-        { status: 400 }
-      );
+    if (body.destinationId) {
+      const destinationExists = await prisma.destination.findUnique({
+        where: { id: body.destinationId },
+      });
+      if (!destinationExists) {
+        return NextResponse.json(
+          { error: "Destination non trouvée" },
+          { status: 400 }
+        );
+      }
     }
 
-    if (data.basePricePerNight <= 0) {
-      return NextResponse.json(
-        { error: "Le prix de base doit être supérieur à 0" },
-        { status: 400 }
-      );
+    if (body.hotelGroupId) {
+      const hotelGroupExists = await prisma.hotelGroup.findUnique({
+        where: { id: body.hotelGroupId },
+      });
+      if (!hotelGroupExists) {
+        return NextResponse.json(
+          { error: "Groupe hôtelier non trouvé" },
+          { status: 400 }
+        );
+      }
     }
 
-    const updatedHotelCard = await prisma.hotelCard.update({
+    const updated = await prisma.hotelCard.update({
       where: { id },
       data: {
-        name: data.name.trim(),
-        idCity: data.idCity,
-        shortDescription: data.shortDescription?.trim(),
-        starRating: parseInt(data.starRating),
-        overallRating: data.overallRating
-          ? parseFloat(data.overallRating)
-          : null,
-        ratingAdjective: data.ratingAdjective?.trim(),
-        reviewCount: data.reviewCount ? parseInt(data.reviewCount) : 0,
-        basePricePerNight: parseFloat(data.basePricePerNight),
-        regularPrice: data.regularPrice ? parseFloat(data.regularPrice) : null,
-        currency: data.currency || "EUR",
-        isPartner: data.isPartner ?? false,
-        promoMessage: data.promoMessage?.trim(),
-        imageMessage: data.imageMessage?.trim(),
-        cancellationPolicy: data.cancellationPolicy?.trim(),
-        accommodationTypeId: data.accommodationTypeId || null,
-        destinationId: data.destinationId || null,
-        hotelGroupId: data.hotelGroupId || null,
-        latitude: data.latitude ? parseFloat(data.latitude) : null,
-        longitude: data.longitude ? parseFloat(data.longitude) : null,
+        // Filtrer les valeurs undefined
+        ...Object.fromEntries(
+          Object.entries(body).filter(([_, value]) => value !== undefined)
+        ),
       },
       include: {
-        accommodationType: true,
-        destination: true,
-        hotelGroup: true,
-        details: {
-          include: {
-            address: {
-              include: {
-                city: {
-                  include: {
-                    country: true,
-                  },
-                },
-                neighborhood: true,
-              },
-            },
+        accommodationType: {
+          select: {
+            name: true,
+            category: true,
+          },
+        },
+        destination: {
+          select: {
+            name: true,
+            type: true,
+          },
+        },
+        hotelGroup: {
+          select: {
+            name: true,
+          },
+        },
+        _count: {
+          select: {
+            parking: true,
+            images: true,
+            HotelAmenity: true,
+            HotelCardToHotelHighlight: true,
+            HotelCardToLabel: true,
+            HotelCardToAccessibilityOption: true,
+            HotelCardToHotelAmenity: true,
           },
         },
       },
     });
 
-    return NextResponse.json(updatedHotelCard, { status: 200 });
-  } catch (error: any) {
+    return NextResponse.json(updated);
+  } catch (error) {
     console.error("PUT HotelCard error:", error);
+
+    // Gestion des erreurs Prisma spécifiques
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
         return NextResponse.json(
-          { error: "Carte d'hôtel non trouvée" },
+          { error: "Carte hôtelière non trouvée" },
+          { status: 404 }
+        );
+      }
+      if (error.code === "P2002") {
+        return NextResponse.json(
+          { error: "Une carte hôtelière avec ce nom existe déjà" },
+          { status: 409 }
+        );
+      }
+      if (error.code === "P2003") {
+        return NextResponse.json(
+          { error: "Référence invalide vers un enregistrement lié" },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (error instanceof Error) {
+      if (error.message.includes("Unique constraint")) {
+        return NextResponse.json(
+          { error: "Une carte hôtelière avec ce nom existe déjà" },
+          { status: 409 }
+        );
+      }
+
+      if (error.message.includes("Invalid")) {
+        return NextResponse.json(
+          { error: "Format de données invalide" },
+          { status: 400 }
+        );
+      }
+    }
+
+    return NextResponse.json(
+      { error: "Erreur serveur interne" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest, context: RouteContext) {
+  try {
+    const { id } = await context.params;
+
+    // Validation de l'ID
+    if (!id || id.trim() === "") {
+      return NextResponse.json(
+        { error: "ID de carte hôtelière invalide" },
+        { status: 400 }
+      );
+    }
+
+    // Vérifier si l'enregistrement existe avant suppression
+    const existingHotelCard = await prisma.hotelCard.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: {
+            parking: true,
+            images: true,
+            HotelCardToHotelHighlight: true,
+            HotelCardToLabel: true,
+            HotelCardToAccessibilityOption: true,
+            HotelCardToHotelAmenity: true,
+          },
+        },
+      },
+    });
+
+    if (!existingHotelCard) {
+      return NextResponse.json(
+        { error: "Carte hôtelière non trouvée" },
+        { status: 404 }
+      );
+    }
+
+    // Vérifier les enregistrements liés avant suppression
+    const totalRelatedRecords =
+      existingHotelCard._count.parking +
+      existingHotelCard._count.images +
+      existingHotelCard._count.HotelCardToHotelHighlight +
+      existingHotelCard._count.HotelCardToLabel +
+      existingHotelCard._count.HotelCardToAccessibilityOption +
+      existingHotelCard._count.HotelCardToHotelAmenity;
+
+    if (totalRelatedRecords > 0) {
+      return NextResponse.json(
+        {
+          error: "Impossible de supprimer une carte hôtelière utilisée",
+          details: {
+            parking: existingHotelCard._count.parking,
+            images: existingHotelCard._count.images,
+            highlights: existingHotelCard._count.HotelCardToHotelHighlight,
+            labels: existingHotelCard._count.HotelCardToLabel,
+            accessibility:
+              existingHotelCard._count.HotelCardToAccessibilityOption,
+            amenities: existingHotelCard._count.HotelCardToHotelAmenity,
+          },
+        },
+        { status: 409 }
+      );
+    }
+
+    await prisma.hotelCard.delete({
+      where: { id },
+    });
+
+    return NextResponse.json(
+      { message: "Carte hôtelière supprimée avec succès" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("DELETE HotelCard error:", error);
+
+    // Gestion des erreurs de contrainte de clé étrangère
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return NextResponse.json(
+          { error: "Carte hôtelière non trouvée" },
           { status: 404 }
         );
       }
       if (error.code === "P2003") {
         return NextResponse.json(
-          { error: "Référence invalide (ville, type d'hébergement, etc.)" },
-          { status: 400 }
+          {
+            error:
+              "Impossible de supprimer une carte hôtelière utilisée par des enregistrements liés",
+          },
+          { status: 409 }
         );
       }
     }
-    return NextResponse.json(
-      { error: "Échec de la mise à jour de la carte d'hôtel" },
-      { status: 500 }
-    );
-  }
-}
 
-// DELETE /api/admin/hotelCard/[id]
-export async function DELETE(req: NextRequest) {
-  try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "ID manquant dans l'URL" },
-        { status: 400 }
-      );
-    }
-
-    await prisma.$transaction(async (tx) => {
-      await tx.hotelCardToHotelHighlight.deleteMany({
-        where: { hotelCardId: id },
-      });
-      await tx.hotelCardToLabel.deleteMany({ where: { hotelCardId: id } });
-      await tx.hotelCardToAccessibilityOption.deleteMany({
-        where: { hotelCardId: id },
-      });
-      await tx.hotelCardToHotelAmenity.deleteMany({
-        where: { hotelCardId: id },
-      });
-      await tx.hotelCard.delete({ where: { id } });
-    });
-
-    return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error: any) {
-    console.error("DELETE HotelCard error:", error);
-    if (error instanceof PrismaClientKnownRequestError) {
-      if (error.code === "P2025") {
-        return NextResponse.json(
-          { error: "Carte d'hôtel non trouvée" },
-          { status: 404 }
-        );
-      }
-    }
-    return NextResponse.json(
-      { error: "Échec de la suppression de la carte d'hôtel" },
-      { status: 500 }
-    );
-  }
-}
-
-// PATCH /api/admin/hotelCard/[id]
-export async function PATCH(req: NextRequest) {
-  try {
-    const url = new URL(req.url);
-    const id = url.pathname.split("/").pop();
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "ID manquant dans l'URL" },
-        { status: 400 }
-      );
-    }
-
-    const data = await req.json();
-    const updateData: any = {};
-
-    if (data.name !== undefined) updateData.name = data.name.trim();
-    if (data.shortDescription !== undefined)
-      updateData.shortDescription = data.shortDescription?.trim();
-    if (data.starRating !== undefined)
-      updateData.starRating = parseInt(data.starRating);
-    if (data.overallRating !== undefined)
-      updateData.overallRating = data.overallRating
-        ? parseFloat(data.overallRating)
-        : null;
-    if (data.basePricePerNight !== undefined)
-      updateData.basePricePerNight = parseFloat(data.basePricePerNight);
-    if (data.isPartner !== undefined) updateData.isPartner = data.isPartner;
-    if (data.promoMessage !== undefined)
-      updateData.promoMessage = data.promoMessage?.trim();
-
-    const updatedHotelCard = await prisma.hotelCard.update({
-      where: { id },
-      data: updateData,
-      include: {
-        accommodationType: true,
-        destination: true,
-        hotelGroup: true,
-      },
-    });
-
-    return NextResponse.json(updatedHotelCard, { status: 200 });
-  } catch (error: any) {
-    console.error("PATCH HotelCard error:", error);
     if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
+      error instanceof Error &&
+      error.message.includes("Foreign key constraint")
     ) {
       return NextResponse.json(
-        { error: "Carte d'hôtel non trouvée" },
-        { status: 404 }
+        {
+          error:
+            "Impossible de supprimer une carte hôtelière utilisée par des enregistrements liés",
+        },
+        { status: 409 }
       );
     }
+
     return NextResponse.json(
-      { error: "Échec de la mise à jour partielle" },
+      { error: "Erreur serveur interne" },
       { status: 500 }
     );
   }
