@@ -87,7 +87,7 @@ model Country {
   order     Int?     @default(100)
   code      String   @unique //quel code ?
   language  String? // plusieur langage possible
-  currency  String? // plusieur possible
+  currency  String?  @default("€") //Plusieur voleur possible
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -339,6 +339,7 @@ model HotelCard {
   id                             String                           @id @default(uuid())
   name                           String
   idCity                         String
+  order                          Int                              @default(20)
   shortDescription               String?
   starRating                     Int
   overallRating                  Float?
@@ -371,13 +372,13 @@ model HotelCard {
 }
 
 model HotelDetails {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   idHotelCard String
   description String?
   addressId   String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  order       Int?     @default(20)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   address Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
 
